@@ -16,8 +16,7 @@
         </tr>
         <tr>
             <td><p th:text="#{visit.date}">visit.date</p></td>
-            <td><input type="text" th:field="*{visitTime}"/></td>
-            <td th:if="${#fields.hasErrors('visitTime')}" th:errors="*{visitTime}">date.error</td>
+            <td><input type="date" th:field="*{visitTime}"/></td>
         </tr>
         <tr>
             <td>
