@@ -1,9 +1,9 @@
 package com.cgi.dentistapp.dto;
 
-import com.cgi.dentistapp.verification.interfaces.PresentOrFuture;
 import com.cgi.dentistapp.verification.interfaces.ValidDentist;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -16,7 +16,7 @@ public class DentistVisitDTO {
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @PresentOrFuture
+    @Future(message="Date-time must be in the future!")
     Date visitTime;
 
     public DentistVisitDTO() {
