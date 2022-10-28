@@ -1,6 +1,7 @@
 package com.cgi.dentistapp.dto;
 
 import com.cgi.dentistapp.verification.interfaces.PresentOrFuture;
+import com.cgi.dentistapp.verification.interfaces.ValidDentist;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import java.util.Date;
 public class DentistVisitDTO {
 
     @Size(min = 1, max = 50)
+    @ValidDentist
     String dentistName;
 
     @NotNull
