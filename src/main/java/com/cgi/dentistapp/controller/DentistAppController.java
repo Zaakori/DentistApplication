@@ -33,6 +33,9 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     @PostMapping("/")
     public String postRegisterForm(@Valid DentistVisitDTO dentistVisitDTO, BindingResult bindingResult) {
 
+
+        System.out.println("DATA: -" + dentistVisitDTO.getVisitTime() + "-");
+
         if (bindingResult.hasErrors()) {
             return "form";
         }
