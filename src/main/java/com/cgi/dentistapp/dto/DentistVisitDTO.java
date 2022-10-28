@@ -1,5 +1,6 @@
 package com.cgi.dentistapp.dto;
 
+import com.cgi.dentistapp.verification.interfaces.PresentOrFuture;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ public class DentistVisitDTO {
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @PresentOrFuture
     Date visitTime;
 
     public DentistVisitDTO() {
