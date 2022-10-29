@@ -51,7 +51,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/all")
     public String showAll(Model model){
-       // model.addAttribute("visits", dentistVisitService.getAllVisits());
+        model.addAttribute("visits", dentistVisitService.getAllVisits());
         return "allVisits";
     }
 }

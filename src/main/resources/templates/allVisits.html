@@ -1,5 +1,17 @@
-<html>
-<body>
-<p th:text="#{myTry.message}">myTry.message</p>
-</body>
-</html>
+<table>
+    <thead>
+    <tr>
+        <th> Dentist </th>
+        <th> Visit time </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${visits.empty}">
+        <td colspan="2"> No Appointments have been made </td>
+    </tr>
+    <tr th:each="appointment : ${visits}">
+        <td><span th:text="${appointment.dentistName}"> Dentist </span></td>
+        <td><span th:text="${appointment.visitTime}"> Visit time </span></td>
+    </tr>
+    </tbody>
+</table>
