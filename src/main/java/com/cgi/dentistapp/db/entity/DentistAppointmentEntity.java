@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "dentist_visit")
-public class DentistVisitEntity {
+@Table(name = "dentist_appointment")
+public class DentistAppointmentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,15 +14,15 @@ public class DentistVisitEntity {
     @Column(name="DENTIST_NAME")
     private String dentistName;
 
-    @Column(name="VISIT_TIME")
-    private Date visitTime;
+    @Column(name="APPOINTMENT_TIME")
+    private Date appointmentTime;
 
-    public DentistVisitEntity() {
+    public DentistAppointmentEntity() {
     }
 
-    public DentistVisitEntity(String dentistName, Date visitTime) {
+    public DentistAppointmentEntity(String dentistName, Date appointmentTime) {
         this.dentistName = dentistName;
-        this.visitTime = visitTime;
+        this.appointmentTime = appointmentTime;
     }
 
     public Long getId() {
@@ -41,11 +41,11 @@ public class DentistVisitEntity {
         this.dentistName = dentistName;
     }
 
-    public Date getVisitTime() {
-        return visitTime;
+    public Date getAppointmentTime() {
+        return appointmentTime;
     }
 
-    public void setVisitTime(Date visitTime) {
-        this.visitTime = visitTime;
+    public void setAppointmentTime(Date appointmentTime) {
+        this.appointmentTime = appointmentTime;
     }
 }

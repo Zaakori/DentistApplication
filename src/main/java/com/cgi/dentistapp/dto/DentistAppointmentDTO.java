@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
-public class DentistVisitDTO {
+public class DentistAppointmentDTO {
 
     @Size(min = 1, max = 50)
     @ValidDentist
@@ -17,14 +17,14 @@ public class DentistVisitDTO {
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Future(message="Date-time must be in the future!")
-    Date visitTime;
+    Date appointmentTime;
 
-    public DentistVisitDTO() {
+    public DentistAppointmentDTO() {
     }
 
-    public DentistVisitDTO(String dentistName, Date visitTime) {
+    public DentistAppointmentDTO(String dentistName, Date appointmentTime) {
         this.dentistName = dentistName;
-        this.visitTime = visitTime;
+        this.appointmentTime = appointmentTime;
     }
 
     public String getDentistName() {
@@ -35,11 +35,11 @@ public class DentistVisitDTO {
         this.dentistName = dentistName;
     }
 
-    public Date getVisitTime() {
-        return visitTime;
+    public Date getAppointmentTime() {
+        return appointmentTime;
     }
 
-    public void setVisitTime(Date visitTime) {
-        this.visitTime = visitTime;
+    public void setAppointmentTime(Date appointmentTime) {
+        this.appointmentTime = appointmentTime;
     }
 }

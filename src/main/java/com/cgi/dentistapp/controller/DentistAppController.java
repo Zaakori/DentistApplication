@@ -1,7 +1,7 @@
 package com.cgi.dentistapp.controller;
 
-import com.cgi.dentistapp.dto.DentistVisitDTO;
-import com.cgi.dentistapp.service.DentistVisitService;
+import com.cgi.dentistapp.dto.DentistAppointmentDTO;
+import com.cgi.dentistapp.service.DentistAppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import javax.validation.Valid;
 public class DentistAppController extends WebMvcConfigurerAdapter {
 
     @Autowired
-    private DentistVisitService dentistVisitService;
+    private DentistAppointmentService dentistAppointmentService;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -27,31 +27,31 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     }
 
     @GetMapping("/")
-    public String showRegisterForm(DentistVisitDTO dentistVisitDTO) {
+    public String showRegisterForm(DentistAppointmentDTO dentistAppointmentDTO) {
         return "form";
     }
 
     @PostMapping("/")
-    public String postRegisterForm(@Valid DentistVisitDTO dentistVisitDTO, BindingResult bindingResult) {
+    public String postRegisterForm(@Valid DentistAppointmentDTO dentistAppointmentDTO, BindingResult bindingResult) {
 
 
-        System.out.println("DATA: -" + dentistVisitDTO.getVisitTime() + "-");
+        System.out.println("DATA: -" + dentistAppointmentDTO.getAppointmentTime() + "-");
 
         if (bindingResult.hasErrors()) {
             return "form";
         }
 
         System.out.println("GOT HERE");
-        System.out.println(dentistVisitDTO.getDentistName());
-        System.out.println(dentistVisitDTO.getVisitTime());
+        System.out.println(dentistAppointmentDTO.getDentistName());
+        System.out.println(dentistAppointmentDTO.getAppointmentTime());
 
-        dentistVisitService.addVisit(dentistVisitDTO.getDentistName(), dentistVisitDTO.getVisitTime());
+        dentistAppointmentService.addAppointment(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentTime());
         return "redirect:/results";
     }
 
     @GetMapping("/all")
     public String showAll(Model model){
-        model.addAttribute("visits", dentistVisitService.getAllVisits());
-        return "allVisits";
+        model.addAttribute("appointments", dentistAppointmentService.getAllAppointments());
+        return "allAppointments";
     }
 }

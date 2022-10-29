@@ -43,7 +43,7 @@ function setDefaultDateAndMinDateToToday() {
 
 </head>
 <body onload="setDefaultDateAndMinDateToToday()">
-<form action="#" th:action="@{/}" th:object="${dentistVisitDTO}" method="post">
+<form action="#" th:action="@{/}" th:object="${dentistAppointmentDTO}" method="post">
     <table>
         <tr>
             <td><p th:text="#{dentist.name}">dentist.name</p></td>
@@ -58,12 +58,12 @@ function setDefaultDateAndMinDateToToday() {
             </td>
         </tr>
         <tr>
-            <td><p th:text="#{visit.dateAndTime}">visit.dateAndTime</p></td>
-            <td><input type="datetime-local" id="dateTimePicker" th:field="*{visitTime}"/></td>
+            <td><p th:text="#{appointment.dateAndTime}">appointment.dateAndTime</p></td>
+            <td><input type="datetime-local" id="dateTimePicker" th:field="*{appointmentTime}"/></td>
         </tr>
         <tr>
             <td>
-                <button type="submit" th:text="#{register.visit}"></button>
+                <button type="submit" th:text="#{register.appointment}"></button>
             </td>
         </tr>
     </table>
