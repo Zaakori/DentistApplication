@@ -25,7 +25,7 @@ public class DentistVisitService {
 
     public List<DentistVisitEntity> getAllVisits(){
         List<DentistVisitEntity> visits = new ArrayList<>();
-        repo.findAll().forEach(visits::add);
+        repo.findAllAppointments().forEach(visits::add);
 
         return visits;
     }
