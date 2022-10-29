@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -19,5 +21,12 @@ public class DentistVisitService {
 
         DentistVisitEntity entity = new DentistVisitEntity(dentistName, visitTime);
         repo.save(entity);
+    }
+
+    public List<DentistVisitEntity> getAllVisits(){
+        List<DentistVisitEntity> visits = new ArrayList<>();
+        repo.findAll().forEach(visits::add);
+
+        return visits;
     }
 }
