@@ -1,4 +1,4 @@
-package com.cgi.dentistapp.entity;
+package com.cgi.dentistapp.db.entity;
 
 import javax.persistence.*;
 import java.util.Date;
