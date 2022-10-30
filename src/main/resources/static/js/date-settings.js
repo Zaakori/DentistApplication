@@ -40,22 +40,34 @@ function setDefaultDateAndMinDateToToday() {
         document.getElementById("dateTimePicker").setAttribute("min", closestValidDateTime);
 }
 
-function checkTimeRange() {
+function checkCorrectTime() {
 
         var pickedDateTime = document.getElementById("dateTimePicker").value;
+        var pickedMinutes = pickedDateTime.substring(14, 16);
         var pickedHour = pickedDateTime.substring(11, 13);
-        var closestValidDateTime = getClosestValidDateTime();
+
         var min = '09';
         var max = 17;
 
+        var isValidTime = true;
+
+
+        if(pickedMinutes != '00'){
+            alert("Appointments start only at full hour.");
+            isValidTime = false;
+        }
 
         if(pickedHour < min){
-            alert("It is too early! The earliest possible appointment time is " + min + ":00.");
-            document.getElementById("dateTimePicker").value = closestValidDateTime;
+            alert("It is too early. The earliest possible appointment time is " + min + ":00.");
+            isValidTime = false;
         }
 
         if(pickedHour > max){
-            alert("It is too late! The latest possible appointment time is  " + max + ":00.");
-            document.getElementById("dateTimePicker").value = closestValidDateTime;
+            alert("It is too late. The latest possible appointment time is  " + max + ":00.");
+            isValidTime = false;
+        }
+
+        if(!isValidTime){
+            document.getElementById("dateTimePicker").value = getClosestValidDateTime();
         }
 }

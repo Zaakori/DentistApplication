@@ -20,7 +20,7 @@
         </tr>
         <tr>
             <td><p th:text="#{appointment.dateAndTime}">appointment.dateAndTime</p></td>
-            <td><input type="datetime-local" id="dateTimePicker" step="3600" onchange="checkTimeRange()" th:field="*{appointmentTime}"/></td>
+            <td><input type="datetime-local" id="dateTimePicker" step="3600" onchange="checkCorrectTime()" th:field="*{appointmentTime}"/></td>
         </tr>
         <tr>
             <td>
