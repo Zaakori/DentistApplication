@@ -34,7 +34,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     @GetMapping("/show-appointments")
     public String showFormWithAllAppointments(DentistAppointmentDTO dentistAppointmentDTO, Model model){
         model.addAttribute("appointments", dentistAppointmentService.getAllAppointments());
-        return "formWithAllAppointments";
+        return "form-with-all-appointments";
     }
 
     @PostMapping("/")
