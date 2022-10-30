@@ -2,47 +2,71 @@
 <head>
     <script>
 /*<![CDATA[*/
-function setDefaultDateAndMinDateToToday() {
 
-    var today = new Date();
+    function setDefaultDateAndMinDateToToday() {
 
-    var mm = today.getMinutes();
-    var hh = today.getHours();
-    var dd = today.getDate();
-    var MM = today.getMonth()+1; //January is 0!
-    var yyyy = today.getFullYear();
+        var today = new Date();
+
+        var mm = today.getMinutes();
+        var hh = today.getHours();
+        var dd = today.getDate();
+        var MM = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
 
 
-    if(mm<10){
-        mm='0'+mm
+        if(mm<10){
+            mm='0'+mm
+        }
+
+        if(hh<10){
+            hh='0'+hh
+        }
+
+        if(dd<10){
+            dd='0'+dd
+        }
+
+        if(MM<10){
+            MM='0'+MM
+        }
+
+
+
+        var todayString = yyyy + '-' + MM + '-' + dd + 'T' + hh + ':' + mm;
+
+        document.getElementById("dateTimePicker").value = todayString;
+        document.getElementById("dateTimePicker").setAttribute("min", todayString);
+
+        // got it from https://stackoverflow.com/questions/32378590/set-date-input-fields-max-date-to-today
     }
 
-    if(hh<10){
-        hh='0'+hh
+    function showAppointmentTable() {
+        var x = document.getElementById("appointmentTable");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+
+        // got it from https://stackoverflow.com/questions/49772700/display-field-on-button-click-thymeleaf
     }
 
-    if(dd<10){
-        dd='0'+dd
-    }
+    function changeButtonValue() {
 
-    if(MM<10){
-        MM='0'+MM
-    }
+        var button = document.getElementById("tableButton");
 
+        if(button.value == "Show Appointment Table") button.value = "Close Appointment Table";
+        else button.value = "Show Appointment Table";
 
-
-    var todayString = yyyy + '-' + MM + '-' + dd + 'T' + hh + ':' + mm;
-
-    document.getElementById("dateTimePicker").value = todayString;
-    document.getElementById("dateTimePicker").setAttribute("min", todayString);
-
-    // got it from https://stackoverflow.com/questions/32378590/set-date-input-fields-max-date-to-today
 }
+
+
+
 /*]]>*/
 </script>
 
 </head>
-<body onload="setDefaultDateAndMinDateToToday()">
+<body onload="setDefaultDateAndMinDateToToday(); showAppointmentTable()">
 <form action="#" th:action="@{/}" th:object="${dentistAppointmentDTO}" method="post">
     <table>
         <tr>
@@ -68,5 +92,25 @@ function setDefaultDateAndMinDateToToday() {
         </tr>
     </table>
 </form>
+<input type="button" id="tableButton" onclick="showAppointmentTable(); changeButtonValue()" value="Show Appointment Table" />
+<div id="appointmentTable">
+    <table>
+        <thead>
+        <tr>
+            <th> Dentist </th>
+            <th> Appointment </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${appointments.empty}">
+            <td colspan="2"> No Appointments have been made </td>
+        </tr>
+        <tr th:each="appointment : ${appointments}">
+            <td><span th:text="${appointment.dentistName}"> Dentist </span></td>
+            <td><span th:text="${appointment.appointmentTime}"> Appointment </span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

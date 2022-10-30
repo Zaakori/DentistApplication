@@ -27,7 +27,8 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     }
 
     @GetMapping("/")
-    public String showRegisterForm(DentistAppointmentDTO dentistAppointmentDTO) {
+    public String showRegisterForm(DentistAppointmentDTO dentistAppointmentDTO, Model model){
+        model.addAttribute("appointments", dentistAppointmentService.getAllAppointments());
         return "form";
     }
 
@@ -47,11 +48,5 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
 
         dentistAppointmentService.addAppointment(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentTime());
         return "redirect:/results";
-    }
-
-    @GetMapping("/all")
-    public String showAll(Model model){
-        model.addAttribute("appointments", dentistAppointmentService.getAllAppointments());
-        return "allAppointments";
     }
 }
