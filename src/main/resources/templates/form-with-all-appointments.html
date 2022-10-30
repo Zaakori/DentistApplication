@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <script type="text/javascript" th:src="@{/js/set-default-date.js}"></script>
+    <script type="text/javascript" th:src="@{/js/date-settings.js}"></script>
 </head>
 <body onload="setDefaultDateAndMinDateToToday()">
 <form action="#" th:action="@{/}" th:object="${dentistAppointmentDTO}" method="post">
@@ -20,7 +20,7 @@
         </tr>
         <tr>
             <td><p th:text="#{appointment.dateAndTime}">appointment.dateAndTime</p></td>
-            <td><input type="datetime-local" id="dateTimePicker" step="3600" th:field="*{appointmentTime}"/></td>
+            <td><input type="datetime-local" id="dateTimePicker" step="3600" onchange="checkTimeRange()" th:field="*{appointmentTime}"/></td>
         </tr>
         <tr>
             <td>
