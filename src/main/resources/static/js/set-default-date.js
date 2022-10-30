@@ -2,16 +2,11 @@ function setDefaultDateAndMinDateToToday() {
 
         var today = new Date();
 
-        var mm = today.getMinutes();
-        var hh = today.getHours();
+        var hh = today.getHours() +1;
         var dd = today.getDate();
-        var MM = today.getMonth()+1; //January is 0!
+        var MM = today.getMonth() +1; //January is 0!
         var yyyy = today.getFullYear();
 
-
-        if(mm<10){
-            mm='0'+mm
-        }
 
         if(hh<10){
             hh='0'+hh
@@ -27,7 +22,7 @@ function setDefaultDateAndMinDateToToday() {
 
 
 
-        var todayString = yyyy + '-' + MM + '-' + dd + 'T' + hh + ':' + mm;
+        var todayString = yyyy + '-' + MM + '-' + dd + 'T' + hh + ':' + '00';
 
         document.getElementById("dateTimePicker").value = todayString;
         document.getElementById("dateTimePicker").setAttribute("min", todayString);

@@ -15,7 +15,7 @@ public class DentistAppointmentDTO {
     String dentistName;
 
     @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH")
     @Future(message="Date-time must be in the future!")
     Date appointmentTime;
 
