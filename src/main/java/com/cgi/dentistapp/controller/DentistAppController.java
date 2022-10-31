@@ -41,16 +41,9 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     @PostMapping("/")
     public String postRegisterForm(@Valid DentistAppointmentDTO dentistAppointmentDTO, BindingResult bindingResult) {
 
-
-        System.out.println("DATA: -" + dentistAppointmentDTO.getAppointmentTime() + "-");
-
         if (bindingResult.hasErrors()) {
             return "form";
         }
-
-        System.out.println("GOT HERE");
-        System.out.println(dentistAppointmentDTO.getDentistName());
-        System.out.println(dentistAppointmentDTO.getAppointmentTime());
 
         dentistAppointmentService.addAppointment(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentTime());
         return "redirect:/successful_registration";
@@ -79,8 +72,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
             return "form_edit";
         }
 
-        dentistAppointmentService.editAppointments();
-
+        dentistAppointmentService.editAppointments(form.getAppointments());
         return "redirect:/successful_edit";
     }
 

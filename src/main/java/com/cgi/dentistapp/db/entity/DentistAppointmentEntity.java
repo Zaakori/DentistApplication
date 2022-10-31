@@ -25,6 +25,12 @@ public class DentistAppointmentEntity {
         this.appointmentTime = appointmentTime;
     }
 
+    public DentistAppointmentEntity(Long id, String dentistName, Date appointmentTime) {
+        this.id = id;
+        this.dentistName = dentistName;
+        this.appointmentTime = appointmentTime;
+    }
+
     public Long getId() {
         return id;
     }

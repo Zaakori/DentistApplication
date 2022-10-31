@@ -3,6 +3,7 @@ package com.cgi.dentistapp.service;
 import com.cgi.dentistapp.db.entity.DentistAppointmentEntity;
 import com.cgi.dentistapp.db.repository.DentistAppointmentRepository;
 import com.cgi.dentistapp.dto.DentistAppointmentDTO;
+import com.cgi.dentistapp.dto.ListOfDentistAppointmentsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +32,13 @@ public class DentistAppointmentService {
         return appointments;
     }
 
-    public void editAppointments(){
-        // TODO
+    public void editAppointments(List<DentistAppointmentDTO> listOfDTOs){
+
+        List<DentistAppointmentEntity> listOfEntities = convertListOfDTOsToListOfEntities(listOfDTOs);
+
+        for(DentistAppointmentEntity entity : listOfEntities){
+            repo.updateEntity(entity.getDentistName(), entity.getAppointmentTime(), entity.getId());
+        }
     }
 
     public List<DentistAppointmentDTO> getAllAppointmentsAsDTO(){
@@ -46,5 +52,17 @@ public class DentistAppointmentService {
         }
 
         return DTOList;
+    }
+
+    private List<DentistAppointmentEntity> convertListOfDTOsToListOfEntities(List<DentistAppointmentDTO> listOfDTOs){
+
+        List<DentistAppointmentEntity> listOfEntities = new ArrayList<>();
+
+        for(DentistAppointmentDTO DTO : listOfDTOs){
+            DentistAppointmentEntity entity = new DentistAppointmentEntity(DTO.getId(), DTO.getDentistName(), DTO.getAppointmentTime());
+            listOfEntities.add(entity);
+        }
+
+        return listOfEntities;
     }
 }
