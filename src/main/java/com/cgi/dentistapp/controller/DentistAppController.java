@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -64,10 +65,18 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     }
 
     @PostMapping("/edit")
-    public String postEditForm(@ModelAttribute ListOfDentistAppointmentsDTO form){
+    public String postEditForm(@ModelAttribute @Valid ListOfDentistAppointmentsDTO form, BindingResult bindingResult, Model model){
 
-        for(DentistAppointmentDTO dto : form.getAppointments()){
-            System.out.println(dto.getId() + " " + dto.getDentistName() + " " + dto.getAppointmentTime());
+        if(bindingResult.hasErrors()){
+
+            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dentistAppointmentService.getAllAppointmentsAsDTO());
+            model.addAttribute("form", appointmentListDTO);
+
+            String error = "Please enter a valid dentist name and a valid date!";
+            model.addAttribute("error", error);
+
+            System.out.println("HAD ERRORS!");
+            return "form_edit";
         }
 
         dentistAppointmentService.editAppointments();

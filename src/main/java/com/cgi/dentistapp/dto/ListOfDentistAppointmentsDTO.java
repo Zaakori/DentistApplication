@@ -1,10 +1,12 @@
 package com.cgi.dentistapp.dto;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ListOfDentistAppointmentsDTO {
 
+    @Valid
     private List<DentistAppointmentDTO> appointments;
 
     public ListOfDentistAppointmentsDTO() {
