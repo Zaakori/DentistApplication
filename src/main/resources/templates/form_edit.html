@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" th:src="@{/js/date-settings.js}"></script>
+</head>
+<body>
+<input type="button" id="tableButton" onclick="location.href='/'" value="Back to Registration" />
+<div id="appointmentTable">
+    <form action="#" th:action="@{/edit}" th:object="${form}" method="post">
+        <fieldset>
+            <input type="submit" id="submitButton" th:value="Save"/>
+            <input type="reset" id="resetButton" name="reset" th:value="Reset"/>
+            <p>If you wish to drop your made changes please click 'Reset'</p>
+            <table>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th> Dentist </th>
+                    <th> Appointment </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="appointment, itemStat : ${form.appointments}">
+                    <td>
+                        <input type="hidden" th:name="|appointments[${itemStat.index}].id|" th:value="${appointment.getId()}"/>
+                    </td>
+                    <td>
+                        <input th:name="|appointments[${itemStat.index}].dentistName|" th:value="${appointment.getDentistName()}"/>
+                    </td>
+                    <td>
+                        <input type="datetime-local" id="editDateTimePicker" step="3600" th:name="|appointments[${itemStat.index}].appointmentTime|" th:value="${appointment.getAppointmentTime()}"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>
