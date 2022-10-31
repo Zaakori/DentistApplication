@@ -2,8 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <script type="text/javascript" th:src="@{/js/date-settings.js}"></script>
+    <script type="text/javascript" th:src="@{/js/appointment-table-settings.js}"></script>
 </head>
-<body onload="setDefaultDateAndMinDateToToday()">
+<body onload="setDefaultDateAndMinDateToToday(); showAppointmentTable()">
 <form action="#" th:action="@{/}" th:object="${dentistAppointmentDTO}" method="post">
     <table>
         <tr>
@@ -29,6 +30,25 @@
         </tr>
     </table>
 </form>
-<input type="button" id="tableButton" value="Show Appointment Table" onclick="location.href='show-appointments'"/>
+<input type="button" id="tableButton" onclick="showAppointmentTable(); changeButtonValue()" value="Show Appointment Table" />
+<div id="appointmentTable">
+    <table>
+        <thead>
+        <tr>
+            <th> Dentist </th>
+            <th> Appointment </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${appointments.empty}">
+            <td colspan="2"> No Appointments have been made </td>
+        </tr>
+        <tr th:each="appointment : ${appointments}">
+            <td><span th:text="${appointment.dentistName}"> Dentist </span></td>
+            <td><span th:text="${appointment.appointmentTime}"> Appointment </span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
