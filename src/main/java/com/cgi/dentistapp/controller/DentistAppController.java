@@ -87,11 +87,20 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     }
 
     @PostMapping("/delete")
-    public String postDeleteForm(@RequestParam String appointmentId, Model model){
+    public String postDeleteForm(@RequestParam(required = false) String appointmentIds, Model model){
 
-        System.out.println("DATA: - " + appointmentId + "-");
+        if(appointmentIds == null){
 
+            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dentistAppointmentService.getAllAppointmentsAsDTO());
+            model.addAttribute("form", appointmentListDTO);
 
+            String error = "You did not choose any appointments!";
+            model.addAttribute("error", error);
+
+            return "form_delete";
+        }
+
+        dentistAppointmentService.deleteAppointments(appointmentIds);
         return "redirect:/successful_delete";
     }
 

@@ -41,6 +41,15 @@ public class DentistAppointmentService {
         }
     }
 
+    public void deleteAppointments(String appointmentIds){
+
+        String[] ids = appointmentIds.split(",");
+
+        for(String id : ids){
+            repo.delete(Long.parseLong(id));
+        }
+    }
+
     public List<DentistAppointmentDTO> getAllAppointmentsAsDTO(){
 
         List<DentistAppointmentEntity> entityList = getAllAppointments();

@@ -6,18 +6,33 @@
 <body>
 <input type="button" id="tableButton" onclick="location.href='/'" value="Back to Registration" />
 <div id="appointmentTable">
-  <tbody>
-  <tr th:each="appointment : ${form.appointments}">
-    <td th:text="${appointment.getDentistName()}"></td>
-    <td th:text="${appointment.getAppointmentTime()}"></td>
-    <td>
-      <form action="#" th:action="@{/delete}" method="post" >
-        <input type="hidden" th:value="${appointment.getId()}" name="appointmentId" />
-        <button type="submit" value="Submit" >Delete</button>
-      </form>
-    </td>
-  </tr>
-  </tbody>
+  <form action="#" th:action="@{/delete}" method="post">
+    <fieldset>
+      <input type="submit" id="submitButton" th:value="Delete"/>
+      <p>Choose which appointments you want to delete</p>
+      <table>
+        <thead>
+        <tr>
+          <th> Dentist </th>
+          <th> Appointment </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="appointment, itemStat : ${form.appointments}">
+          <td>
+            <span th:text="${appointment.dentistName}" > Dentist </span>
+          </td>
+          <td>
+            <span th:text="${appointment.appointmentTime}" > Appointment </span>
+          </td>
+          <td>
+            <input type="checkbox" name="appointmentIds" th:value="${appointment.getId()}" />
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </fieldset>
+  </form>
   <h3 th:text="${error}"></h3>
 </div>
 </body>
