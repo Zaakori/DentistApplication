@@ -12,6 +12,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -28,6 +29,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/successful_registration").setViewName("successful_registration");
         registry.addViewController("/successful_edit").setViewName("successful_edit");
+        registry.addViewController("/successful_delete").setViewName("successful_delete");
     }
 
     @GetMapping("/")
@@ -74,6 +76,23 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
 
         dentistAppointmentService.editAppointments(form.getAppointments());
         return "redirect:/successful_edit";
+    }
+
+    @GetMapping("/delete")
+    public String showDeleteForm(DentistAppointmentDTO dentistAppointmentDTO, Model model){
+        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dentistAppointmentService.getAllAppointmentsAsDTO());
+
+        model.addAttribute("form", appointmentListDTO);
+        return "form_delete";
+    }
+
+    @PostMapping("/delete")
+    public String postDeleteForm(@RequestParam String appointmentId, Model model){
+
+        System.out.println("DATA: - " + appointmentId + "-");
+
+
+        return "redirect:/successful_delete";
     }
 
 
