@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -48,6 +46,21 @@ public class DentistAppointmentService {
         for(String id : ids){
             repo.delete(Long.parseLong(id));
         }
+    }
+
+    public boolean checkIfIdsAreValid(String appointmentIds){
+
+        Set<Integer> setOfValidIds = new HashSet<>(repo.findAllAppointmentIds());
+
+        String[] ids = appointmentIds.split(",");
+
+        for(String nonValidatedId : ids){
+            if(!setOfValidIds.contains(Integer.parseInt(nonValidatedId))){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public List<DentistAppointmentDTO> getAllAppointmentsAsDTO(){

@@ -3,6 +3,7 @@ package com.cgi.dentistapp.controller;
 import com.cgi.dentistapp.dto.DentistAppointmentDTO;
 import com.cgi.dentistapp.dto.ListOfDentistAppointmentsDTO;
 import com.cgi.dentistapp.service.DentistAppointmentService;
+import com.cgi.dentistapp.verification.interfaces.ValidDentist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
@@ -52,7 +53,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     }
 
     @GetMapping("/edit")
-    public String showEditForm(DentistAppointmentDTO dentistAppointmentDTO, Model model){
+    public String showEditForm(Model model){
         ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dentistAppointmentService.getAllAppointmentsAsDTO());
 
         model.addAttribute("form", appointmentListDTO);
@@ -79,7 +80,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     }
 
     @GetMapping("/delete")
-    public String showDeleteForm(DentistAppointmentDTO dentistAppointmentDTO, Model model){
+    public String showDeleteForm(Model model){
         ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dentistAppointmentService.getAllAppointmentsAsDTO());
 
         model.addAttribute("form", appointmentListDTO);
@@ -89,7 +90,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     @PostMapping("/delete")
     public String postDeleteForm(@RequestParam(required = false) String appointmentIds, Model model){
 
-        if(appointmentIds == null){
+        if((appointmentIds == null) || (!dentistAppointmentService.checkIfIdsAreValid(appointmentIds))){
 
             ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dentistAppointmentService.getAllAppointmentsAsDTO());
             model.addAttribute("form", appointmentListDTO);

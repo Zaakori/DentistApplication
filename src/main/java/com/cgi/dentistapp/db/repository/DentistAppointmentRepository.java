@@ -13,6 +13,9 @@ public interface DentistAppointmentRepository extends CrudRepository<DentistAppo
     @Query(value = "SELECT * FROM dentist_appointment ORDER BY appointment_time", nativeQuery = true)
     List<DentistAppointmentEntity> findAllAppointments();
 
+    @Query(value = "SELECT id FROM dentist_appointment", nativeQuery = true)
+    List<Integer> findAllAppointmentIds();
+
     @Transactional
     @Modifying
     @Query(value = "UPDATE dentist_appointment SET dentist_name = ?1, appointment_time = ?2 WHERE id = ?3", nativeQuery = true)
