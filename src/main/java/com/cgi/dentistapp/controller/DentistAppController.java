@@ -72,16 +72,23 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     @PostMapping("/edit")
     public String postEditForm(@ModelAttribute @Valid ListOfDentistAppointmentsDTO form, BindingResult bindingResult, Model model){
 
+        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
+        model.addAttribute("form", appointmentListDTO);
+
         if(bindingResult.hasErrors()){
-
-            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
-            model.addAttribute("form", appointmentListDTO);
-
             String error = "Please enter a valid dentist name and a valid date!";
             model.addAttribute("error", error);
 
             return "form_edit";
         }
+
+        if(!service.checkIfAppointmentListIsAvailable(form.getAppointments())){
+            String twoEqualAppointments = "There can not be two equal appointments!";
+            model.addAttribute("twoEqualAppointments", twoEqualAppointments);
+
+            return "form_edit";
+        }
+
 
         service.editAppointments(form.getAppointments());
         return "redirect:/successful_edit";

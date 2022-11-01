@@ -55,6 +55,22 @@ public class DentistAppointmentService {
         return !appointments.contains(newEntity);
     }
 
+    public boolean checkIfAppointmentListIsAvailable(List<DentistAppointmentDTO> listOfDTOs){
+
+        List<DentistAppointmentEntity> inputEntityList = convertListOfDTOsToListOfEntities(listOfDTOs);
+        Set<DentistAppointmentEntity> inputEntitySet = new HashSet<>();
+
+        for(DentistAppointmentEntity inputEntity : inputEntityList){
+            if(inputEntitySet.contains(inputEntity)){
+                return false;
+            } else {
+                inputEntitySet.add(inputEntity);
+            }
+        }
+
+        return true;
+    }
+
     public boolean checkIfIdsAreValid(String appointmentIds){
 
         Set<Integer> setOfValidIds = new HashSet<>(repo.findAllAppointmentIds());
