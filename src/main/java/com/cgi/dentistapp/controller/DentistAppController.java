@@ -3,13 +3,11 @@ package com.cgi.dentistapp.controller;
 import com.cgi.dentistapp.dto.DentistAppointmentDTO;
 import com.cgi.dentistapp.dto.ListOfDentistAppointmentsDTO;
 import com.cgi.dentistapp.service.DentistAppointmentService;
-import com.cgi.dentistapp.verification.interfaces.ValidDentist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +22,7 @@ import javax.validation.Valid;
 public class DentistAppController extends WebMvcConfigurerAdapter {
 
     @Autowired
-    private DentistAppointmentService dentistAppointmentService;
+    private DentistAppointmentService service;
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -35,7 +33,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/")
     public String showRegisterForm(DentistAppointmentDTO dentistAppointmentDTO, Model model){
-        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dentistAppointmentService.getAllAppointmentsAsDTO());
+        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
 
         model.addAttribute("appointments", appointmentListDTO);
         return "form";
@@ -48,13 +46,13 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
             return "form";
         }
 
-        dentistAppointmentService.addAppointment(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentTime());
+        service.addAppointment(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentTime());
         return "redirect:/successful_registration";
     }
 
     @GetMapping("/edit")
     public String showEditForm(Model model){
-        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dentistAppointmentService.getAllAppointmentsAsDTO());
+        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
 
         model.addAttribute("form", appointmentListDTO);
         return "form_edit";
@@ -65,7 +63,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
 
         if(bindingResult.hasErrors()){
 
-            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dentistAppointmentService.getAllAppointmentsAsDTO());
+            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
             model.addAttribute("form", appointmentListDTO);
 
             String error = "Please enter a valid dentist name and a valid date!";
@@ -75,13 +73,13 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
             return "form_edit";
         }
 
-        dentistAppointmentService.editAppointments(form.getAppointments());
+        service.editAppointments(form.getAppointments());
         return "redirect:/successful_edit";
     }
 
     @GetMapping("/delete")
     public String showDeleteForm(Model model){
-        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dentistAppointmentService.getAllAppointmentsAsDTO());
+        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
 
         model.addAttribute("form", appointmentListDTO);
         return "form_delete";
@@ -90,9 +88,9 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     @PostMapping("/delete")
     public String postDeleteForm(@RequestParam(required = false) String appointmentIds, Model model){
 
-        if((appointmentIds == null) || (!dentistAppointmentService.checkIfIdsAreValid(appointmentIds))){
+        if((appointmentIds == null) || (!service.checkIfIdsAreValid(appointmentIds))){
 
-            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dentistAppointmentService.getAllAppointmentsAsDTO());
+            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
             model.addAttribute("form", appointmentListDTO);
 
             String error = "You did not choose any appointments!";
@@ -101,7 +99,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
             return "form_delete";
         }
 
-        dentistAppointmentService.deleteAppointments(appointmentIds);
+        service.deleteAppointments(appointmentIds);
         return "redirect:/successful_delete";
     }
 

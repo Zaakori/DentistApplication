@@ -3,7 +3,6 @@ package com.cgi.dentistapp.service;
 import com.cgi.dentistapp.db.entity.DentistAppointmentEntity;
 import com.cgi.dentistapp.db.repository.DentistAppointmentRepository;
 import com.cgi.dentistapp.dto.DentistAppointmentDTO;
-import com.cgi.dentistapp.dto.ListOfDentistAppointmentsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
