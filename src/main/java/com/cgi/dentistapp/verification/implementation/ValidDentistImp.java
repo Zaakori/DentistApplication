@@ -5,6 +5,7 @@ import com.cgi.dentistapp.verification.interfaces.ValidDentist;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.List;
 
 
 public class ValidDentistImp implements ConstraintValidator<ValidDentist, String> {
@@ -16,13 +17,7 @@ public class ValidDentistImp implements ConstraintValidator<ValidDentist, String
     @Override
     public boolean isValid(String dentistName, ConstraintValidatorContext cxt) {
 
-        for(ListOfDentists dentist : ListOfDentists.values()){
-
-            if(dentistName.equals(dentist.label)){
-                return true;
-            }
-        }
-
-        return false;
+        List<String> listOfDentists = ListOfDentists.getListOfDentists();
+        return listOfDentists.contains(dentistName);
     }
 }

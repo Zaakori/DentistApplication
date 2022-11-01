@@ -2,6 +2,7 @@ package com.cgi.dentistapp.controller;
 
 import com.cgi.dentistapp.dto.DentistAppointmentDTO;
 import com.cgi.dentistapp.dto.ListOfDentistAppointmentsDTO;
+import com.cgi.dentistapp.enums.ListOfDentists;
 import com.cgi.dentistapp.service.DentistAppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @EnableAutoConfiguration
@@ -34,8 +36,10 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     @GetMapping("/")
     public String showRegisterForm(DentistAppointmentDTO dentistAppointmentDTO, Model model){
         ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
+        List<String> listOfDentists = ListOfDentists.getListOfDentists();
 
         model.addAttribute("appointments", appointmentListDTO);
+        model.addAttribute("listOfDentists", listOfDentists);
         return "form";
     }
 
@@ -52,7 +56,10 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
             model.addAttribute("error", error);
 
             ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
+            List<String> listOfDentists = ListOfDentists.getListOfDentists();
+
             model.addAttribute("appointments", appointmentListDTO);
+            model.addAttribute("listOfDentists", listOfDentists);
 
             return "form";
         }

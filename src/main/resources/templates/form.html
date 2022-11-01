@@ -11,11 +11,7 @@
             <td><p th:text="#{dentist.name}">dentist.name</p></td>
             <td>
                 <select th:field="*{dentistName}">
-                    <option value = "Galerius Maximus">Galerius Maximus</option>
-                    <option value = "Lucretia Amata">Lucretia Amata</option>
-                    <option value = "Equitia Clara">Equitia Clara</option>
-                    <option value = "Horatius Fulgencio">Horatius Fulgencio</option>
-                    <option value = "Malleolus Paulus">Malleolus Paulus</option>
+                    <option th:each="name : ${listOfDentists}" th:value="${name}" th:text="${name}"></option>
                 </select>
             </td>
         </tr>

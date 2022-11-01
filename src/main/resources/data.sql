@@ -1,2 +1,2 @@
-INSERT INTO dentist_appointment (DENTIST_NAME, APPOINTMENT_TIME) VALUES ('Vassily Petrov', '2022-10-25 14:00:00');
-INSERT INTO dentist_appointment (DENTIST_NAME, APPOINTMENT_TIME) VALUES ('Maria Vostok', '2023-04-05 10:00:00');
+INSERT INTO dentist_appointment (DENTIST_NAME, APPOINTMENT_TIME) VALUES ('Horatius Fulgencio', '2022-12-25 14:00:00');
+INSERT INTO dentist_appointment (DENTIST_NAME, APPOINTMENT_TIME) VALUES ('Malleolus Paulus', '2023-04-05 10:00:00');
