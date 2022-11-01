@@ -47,6 +47,14 @@ public class DentistAppointmentService {
         }
     }
 
+    public boolean checkIfAppointmentIsAvailable(String dentistName, Date appointmentTime){
+
+        Set<DentistAppointmentEntity> appointments = new HashSet<>(getAllAppointments());
+        DentistAppointmentEntity newEntity = new DentistAppointmentEntity(dentistName, appointmentTime);
+
+        return !appointments.contains(newEntity);
+    }
+
     public boolean checkIfIdsAreValid(String appointmentIds){
 
         Set<Integer> setOfValidIds = new HashSet<>(repo.findAllAppointmentIds());

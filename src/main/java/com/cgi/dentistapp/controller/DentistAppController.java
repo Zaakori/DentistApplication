@@ -40,9 +40,20 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     }
 
     @PostMapping("/")
-    public String postRegisterForm(@Valid DentistAppointmentDTO dentistAppointmentDTO, BindingResult bindingResult) {
+    public String postRegisterForm(@Valid DentistAppointmentDTO dentistAppointmentDTO, BindingResult bindingResult, Model model) {
 
+        // how does this redirect work without giving it 'appointments' into the model??
         if (bindingResult.hasErrors()) {
+            return "form";
+        }
+
+        if(!service.checkIfAppointmentIsAvailable(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentTime())){
+            String error = "This date and time has already been booked for this dentist! Please check Appointment Table to determine available spots.";
+            model.addAttribute("error", error);
+
+            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
+            model.addAttribute("appointments", appointmentListDTO);
+
             return "form";
         }
 
@@ -69,7 +80,6 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
             String error = "Please enter a valid dentist name and a valid date!";
             model.addAttribute("error", error);
 
-            System.out.println("HAD ERRORS!");
             return "form_edit";
         }
 

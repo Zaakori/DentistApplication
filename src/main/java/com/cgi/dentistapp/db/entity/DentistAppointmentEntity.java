@@ -54,4 +54,37 @@ public class DentistAppointmentEntity {
     public void setAppointmentTime(Date appointmentTime) {
         this.appointmentTime = appointmentTime;
     }
+
+    // IS THIS A NICE and correct equals?
+    @Override
+    public boolean equals(Object o){
+
+        if(o == this){
+            return true;
+        }
+
+        if(!(o instanceof DentistAppointmentEntity)){
+            return false;
+        }
+
+        DentistAppointmentEntity other = (DentistAppointmentEntity) o;
+
+        return this.dentistName.equals(other.dentistName) && this.appointmentTime.equals(other.appointmentTime);
+    }
+
+    @Override
+    public int hashCode(){
+
+        int result = 17;
+
+        if(dentistName != null) {
+            result = 31 * result * dentistName.hashCode();
+        }
+
+        if(appointmentTime != null){
+            result = 31 * result * appointmentTime.hashCode();
+        }
+
+        return result;
+    }
 }
