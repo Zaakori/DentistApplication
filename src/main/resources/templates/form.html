@@ -5,30 +5,34 @@
     <script type="text/javascript" th:src="@{/js/appointment-table-settings.js}"></script>
 </head>
 <body onload="setDefaultDateAndMinDateToToday(); showAppointmentTable()">
+<div id="registerForm">
 <form action="#" th:action="@{/}" th:object="${dentistAppointmentDTO}" method="post">
-    <table>
+    <fieldset>
+        <h2>Register Appointment</h2>
+        <table>
         <tr>
-            <td><p th:text="#{dentist.name}">dentist.name</p></td>
+            <th th:text="#{dentist.name}">dentist.name</th>
+            <th th:text="#{appointment.dateAndTime}">appointment.dateAndTime</th>
+        </tr>
+        <tr>
             <td>
                 <select th:field="*{dentistName}">
                     <option th:each="name : ${listOfDentists}" th:value="${name}" th:text="${name}"></option>
                 </select>
             </td>
-        </tr>
-        <tr>
-            <td><p th:text="#{appointment.dateAndTime}">appointment.dateAndTime</p></td>
             <td><input type="datetime-local" id="dateTimePicker" step="3600" onchange="checkCorrectTime()" th:field="*{appointmentTime}"/></td>
         </tr>
         <tr>
             <td>
                 <button type="submit" th:text="#{register.appointment}"></button>
             </td>
-            <td>
-                <h3 th:text="${error}"></h3>
-            </td>
         </tr>
     </table>
+        <h3 th:text="${error}"></h3>
+    </fieldset>
 </form>
+</div>
+<p></p>
 <input type="button" id="tableButton" onclick="showAppointmentTable(); changeButtonValue()" value="Show Appointment Table" />
 <div id="appointmentTable">
     <table>
@@ -50,6 +54,46 @@
         </tr>
         </tbody>
     </table>
+</div>
+<p></p>
+<div id="searchForm">
+    <form action="#" th:action="@{/search}" th:object="${searchDTO}" method="post">
+        <fieldset>
+            <h2>Search Appointments</h2>
+            <p>If you want to nullify the dates please click 'Reset'</p>
+            <table>
+                <thead>
+                <tr>
+                    <th> Dentist </th>
+                    <th> Start Date and Time </th>
+                    <th> End Date and Time </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <select th:field="*{dentistName}">
+                            <option th:value="0" th:text="None"></option>
+                            <option th:each="name : ${listOfDentists}" th:value="${name}" th:text="${name}"></option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="datetime-local" th:field="*{startingFromDate}"/>
+                    </td>
+                    <td>
+                        <input type="datetime-local" th:field="*{endOnDate}"/>
+                    </td>
+                    <td>
+                        <input type="submit" id="submitButton" th:value="SEARCH"/>
+                    </td>
+                    <td>
+                        <input type="reset" id="resetButton" name="reset" th:value="Reset"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </form>
 </div>
 </body>
 </html>

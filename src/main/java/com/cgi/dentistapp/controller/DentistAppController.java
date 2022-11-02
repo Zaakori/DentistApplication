@@ -2,6 +2,7 @@ package com.cgi.dentistapp.controller;
 
 import com.cgi.dentistapp.dto.DentistAppointmentDTO;
 import com.cgi.dentistapp.dto.ListOfDentistAppointmentsDTO;
+import com.cgi.dentistapp.dto.SearchDTO;
 import com.cgi.dentistapp.enums.ListOfDentists;
 import com.cgi.dentistapp.service.DataPersistenceService;
 import com.cgi.dentistapp.service.VerificationService;
@@ -39,7 +40,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     }
 
     @GetMapping("/")
-    public String showRegisterForm(DentistAppointmentDTO dentistAppointmentDTO, Model model){
+    public String showRegisterForm(DentistAppointmentDTO dentistAppointmentDTO, SearchDTO searchDTO, Model model){
         ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
         List<String> listOfDentists = ListOfDentists.getListOfDentists();
 
@@ -49,7 +50,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     }
 
     @PostMapping("/")
-    public String postRegisterForm(@Valid DentistAppointmentDTO dentistAppointmentDTO, BindingResult bindingResult, Model model) {
+    public String postRegisterForm(@Valid DentistAppointmentDTO dentistAppointmentDTO, SearchDTO searchDTO, BindingResult bindingResult, Model model) {
 
         // how does this redirect work without giving it 'appointments' into the model??
         if (bindingResult.hasErrors()) {
@@ -130,6 +131,25 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
 
         dataPersistenceService.deleteAppointments(appointmentIds);
         return "redirect:/successful_delete";
+    }
+
+    @PostMapping("/search")
+    public String postSearchForm(@Valid SearchDTO searchDTO, BindingResult bindingResult, Model model){
+
+        System.out.println("DATA: " + searchDTO.getDentistName() + ", " + searchDTO.getStartingFromDate() + ", " + searchDTO.getEndOnDate());
+
+        if(bindingResult.hasErrors()){
+            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
+            List<String> listOfDentists = ListOfDentists.getListOfDentists();
+
+            model.addAttribute("appointments", appointmentListDTO);
+            model.addAttribute("listOfDentists", listOfDentists);
+
+            return "form";
+        }
+
+        // that is just a placeholder for now
+        return "redirect:/successful_registration";
     }
 
 
