@@ -1,6 +1,6 @@
 package com.cgi.dentistapp.verification.implementation;
 
-import com.cgi.dentistapp.enums.ListOfDentists;
+import com.cgi.dentistapp.enums.DentistNames;
 import com.cgi.dentistapp.verification.interfaces.ValidDentist;
 
 import javax.validation.ConstraintValidator;
@@ -17,7 +17,7 @@ public class ValidDentistImp implements ConstraintValidator<ValidDentist, String
     @Override
     public boolean isValid(String dentistName, ConstraintValidatorContext cxt) {
 
-        List<String> listOfDentists = ListOfDentists.getListOfDentists();
+        List<String> listOfDentists = DentistNames.getListOfDentists();
         return listOfDentists.contains(dentistName);
     }
 }

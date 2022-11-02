@@ -3,7 +3,7 @@ package com.cgi.dentistapp.enums;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum ListOfDentists {
+public enum DentistNames {
     GALERIUS_MAXIMUS("Galerius Maximus"),
     LUCRETIA_AMATA("Lucretia Amata"),
     EQUITIA_CLARA("Equitia Clara"),
@@ -12,7 +12,7 @@ public enum ListOfDentists {
 
     public final String label;
 
-    ListOfDentists(String label) {
+    DentistNames(String label) {
         this.label = label;
     }
 
@@ -20,7 +20,7 @@ public enum ListOfDentists {
 
         List<String> listOfDentists = new ArrayList<>();
 
-        for(ListOfDentists dentist : values()){
+        for(DentistNames dentist : values()){
             listOfDentists.add(dentist.label);
         }
 

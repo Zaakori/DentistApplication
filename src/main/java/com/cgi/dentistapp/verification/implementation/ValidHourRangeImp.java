@@ -1,6 +1,5 @@
 package com.cgi.dentistapp.verification.implementation;
 
-import com.cgi.dentistapp.enums.ListOfDentists;
 import com.cgi.dentistapp.verification.interfaces.ValidHourRange;
 
 import javax.validation.ConstraintValidator;
