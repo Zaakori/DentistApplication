@@ -7,4 +7,3 @@ INSERT INTO dentist_appointment (DENTIST_NAME, APPOINTMENT_TIME) VALUES ('Malleo
 INSERT INTO dentist_appointment (DENTIST_NAME, APPOINTMENT_TIME) VALUES ('Malleolus Paulus', '2023-01-01 14:00:00');
 INSERT INTO dentist_appointment (DENTIST_NAME, APPOINTMENT_TIME) VALUES ('Equitia Clara', '2023-04-05 10:00:00');
 INSERT INTO dentist_appointment (DENTIST_NAME, APPOINTMENT_TIME) VALUES ('Galerius Maximus', '2023-04-05 10:00:00');
-

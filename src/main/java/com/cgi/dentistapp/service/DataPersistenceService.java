@@ -61,10 +61,10 @@ public class DataPersistenceService {
         }
     }
 
-    // These last two methods are basically exactly the same, and they could be changed to just one method that takes in generics, but
-    // that would be a mistake. Right now it happened so that DTO and Entity are exactly the same, and can be basically used interchangeably, but
-    // in the future that might change and if it does change then one method with generics will break. So there should be two different methods that
-    // convert one object into another according to circumstances.
+    /* These last two methods are basically exactly the same, and they could be changed to just one method that takes in generics, but
+       that would be a mistake. Right now it happened so that DTO and Entity are exactly the same, and can be basically used interchangeably, but
+       in the future that might change and if it does change then one method with generics will break. So there should be two different methods that
+       convert one object into another according to circumstances. */
     public List<DentistAppointmentDTO> convertListOfEntitiesToListOfDTOs(List<DentistAppointmentEntity> listOfEntities){
 
         List<DentistAppointmentDTO> listOfDTOs = new ArrayList<>();
