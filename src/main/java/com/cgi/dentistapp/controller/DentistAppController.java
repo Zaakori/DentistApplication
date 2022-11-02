@@ -46,6 +46,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
 
         model.addAttribute("appointments", appointmentListDTO);
         model.addAttribute("listOfDentists", listOfDentists);
+        model.addAttribute("search", new ListOfDentistAppointmentsDTO());
         return "form";
     }
 
@@ -134,22 +135,32 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     }
 
     @PostMapping("/search")
-    public String postSearchForm(@Valid SearchDTO searchDTO, BindingResult bindingResult, Model model){
+    public String postSearchForm(@Valid SearchDTO searchDTO, DentistAppointmentDTO dentistAppointmentDTO, BindingResult bindingResult, Model model){
 
         System.out.println("DATA: " + searchDTO.getDentistName() + ", " + searchDTO.getStartingFromDate() + ", " + searchDTO.getEndOnDate());
 
+        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
+        List<String> listOfDentists = ListOfDentists.getListOfDentists();
+
+        model.addAttribute("appointments", appointmentListDTO);
+        model.addAttribute("listOfDentists", listOfDentists);
+
         if(bindingResult.hasErrors()){
-            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
-            List<String> listOfDentists = ListOfDentists.getListOfDentists();
-
-            model.addAttribute("appointments", appointmentListDTO);
-            model.addAttribute("listOfDentists", listOfDentists);
-
             return "form";
         }
 
-        // that is just a placeholder for now
-        return "redirect:/successful_registration";
+
+        List<DentistAppointmentDTO> dtoList = dataPersistenceService.search(searchDTO.getDentistName(), searchDTO.getStartingFromDate(), searchDTO.getEndOnDate());
+        ListOfDentistAppointmentsDTO searchedListDTO = new ListOfDentistAppointmentsDTO(dtoList);
+
+        for(DentistAppointmentDTO dto : searchedListDTO.getAppointments()) {
+            System.out.println(dto.getDentistName());
+            System.out.println(dto.getAppointmentTime());
+            System.out.println("----------------");
+        }
+
+        model.addAttribute("search", searchedListDTO);
+        return "form";
     }
 
 

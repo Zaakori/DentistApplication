@@ -4,6 +4,7 @@ import com.cgi.dentistapp.db.entity.DentistAppointmentEntity;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -15,6 +16,13 @@ public interface DentistAppointmentRepository extends CrudRepository<DentistAppo
 
     @Query(value = "SELECT id FROM dentist_appointment", nativeQuery = true)
     List<Integer> findAllIds();
+
+    @Query(value = "SELECT * FROM DENTIST_APPOINTMENT " +
+            "WHERE (dentist_name = :dentistName OR :dentistName IS NULL) " +
+            "AND (appointment_time >= :startingFromDate OR :startingFromDate IS NULL) " +
+            "AND (appointment_time <= :endOnDate OR :endOnDate IS NULL) " +
+            "ORDER BY appointment_time", nativeQuery = true)
+    List<DentistAppointmentEntity> search(@Param("dentistName") String dentistName, @Param("startingFromDate") Date startingFromDate, @Param("endOnDate") Date endOnDate);
 
     @Transactional
     @Modifying

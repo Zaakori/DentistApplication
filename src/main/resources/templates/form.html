@@ -33,6 +33,7 @@
 </form>
 </div>
 <p></p>
+<p>* Click 'Show Appointment Table' to see all appointments and to edit or delete appointments</p>
 <input type="button" id="tableButton" onclick="showAppointmentTable(); changeButtonValue()" value="Show Appointment Table" />
 <div id="appointmentTable">
     <table>
@@ -60,7 +61,8 @@
     <form action="#" th:action="@{/search}" th:object="${searchDTO}" method="post">
         <fieldset>
             <h2>Search Appointments</h2>
-            <p>If you want to nullify the dates please click 'Reset'</p>
+            <p>* Any or all of the 3 fields may be empty</p>
+            <p>* If you want to nullify the dates please click 'Reset'</p>
             <table>
                 <thead>
                 <tr>
@@ -92,6 +94,25 @@
                 </tr>
                 </tbody>
             </table>
+            <div id="searchTable">
+                <table>
+                    <thead>
+                    <tr>
+                        <th> Dentist </th>
+                        <th> Appointment </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${search.empty()}">
+                        <td colspan="2"> No Appointments have been found </td>
+                    </tr>
+                    <tr th:each="appointment : ${search.getAppointments()}">
+                        <td><span th:text="${appointment.dentistName}"> Dentist </span></td>
+                        <td><span th:text="${appointment.appointmentTime}"> Appointment </span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </fieldset>
     </form>
 </div>

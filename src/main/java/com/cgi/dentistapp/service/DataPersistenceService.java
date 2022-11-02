@@ -51,17 +51,34 @@ public class DataPersistenceService {
         }
     }
 
-    public List<DentistAppointmentDTO> getAllAppointmentsAsDTO(){
+    public List<DentistAppointmentDTO> search(String dentistName, Date startingFromDate, Date endOnDate){
 
-        List<DentistAppointmentEntity> entityList = getAllAppointments();
-        List<DentistAppointmentDTO> DTOList = new ArrayList<>();
+        String name = dentistName;
 
-        for(DentistAppointmentEntity entity : entityList){
-            DentistAppointmentDTO DTO = new DentistAppointmentDTO(entity.getId(), entity.getDentistName(), entity.getAppointmentTime());
-            DTOList.add(DTO);
+        if(dentistName.equals("0")){
+            name = null;
         }
 
-        return DTOList;
+        List<DentistAppointmentEntity> listOfEntities = repo.search(name, startingFromDate, endOnDate);
+
+        return convertListOfEntitiesToListOfDTOs(listOfEntities);
+    }
+
+    public List<DentistAppointmentDTO> getAllAppointmentsAsDTO(){
+        return convertListOfEntitiesToListOfDTOs(getAllAppointments());
+    }
+
+    // these two last methods are exactly the same, I should redo them into one method using generics
+    public List<DentistAppointmentDTO> convertListOfEntitiesToListOfDTOs(List<DentistAppointmentEntity> listOfEntities){
+
+        List<DentistAppointmentDTO> listOfDTOs = new ArrayList<>();
+
+        for(DentistAppointmentEntity entity : listOfEntities){
+            DentistAppointmentDTO DTO = new DentistAppointmentDTO(entity.getId(), entity.getDentistName(), entity.getAppointmentTime());
+            listOfDTOs.add(DTO);
+        }
+
+        return listOfDTOs;
     }
 
     public List<DentistAppointmentEntity> convertListOfDTOsToListOfEntities(List<DentistAppointmentDTO> listOfDTOs){
