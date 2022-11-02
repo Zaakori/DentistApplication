@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 
+// DONE
 @Service
 @Transactional
 public class DataPersistenceService {
@@ -17,20 +18,29 @@ public class DataPersistenceService {
     private DentistAppointmentRepository repo;
 
     public void addAppointment(String dentistName, Date appointmentTime) {
-
         DentistAppointmentEntity entity = new DentistAppointmentEntity(dentistName, appointmentTime);
         repo.save(entity);
     }
 
     public List<DentistAppointmentEntity> getAllAppointments(){
-        List<DentistAppointmentEntity> appointments = new ArrayList<>();
-        repo.findAllAppointments().forEach(appointments::add);
+        return new ArrayList<>(repo.findAllAppointments());
+    }
 
-        return appointments;
+    public List<DentistAppointmentDTO> getAllAppointmentsAsDTO(){
+        return convertListOfEntitiesToListOfDTOs(getAllAppointments());
     }
 
     public List<Integer> getAllIds(){
         return repo.findAllIds();
+    }
+
+    public List<DentistAppointmentDTO> getAppointmentsBySearch(String dentistName, Date startingFromDate, Date endOnDate){
+
+        String name = dentistName;
+
+        if(dentistName.equals("0")) name = null;
+
+        return convertListOfEntitiesToListOfDTOs(repo.search(name, startingFromDate, endOnDate));
     }
 
     public void editAppointments(List<DentistAppointmentDTO> listOfDTOs){
@@ -42,33 +52,19 @@ public class DataPersistenceService {
         }
     }
 
-    public void deleteAppointments(String appointmentIds){
+    public void deleteAppointments(String stringOfIds){
 
-        String[] ids = appointmentIds.split(",");
+        String[] ids = stringOfIds.split(",");
 
         for(String id : ids){
             repo.delete(Long.parseLong(id));
         }
     }
 
-    public List<DentistAppointmentDTO> search(String dentistName, Date startingFromDate, Date endOnDate){
-
-        String name = dentistName;
-
-        if(dentistName.equals("0")){
-            name = null;
-        }
-
-        List<DentistAppointmentEntity> listOfEntities = repo.search(name, startingFromDate, endOnDate);
-
-        return convertListOfEntitiesToListOfDTOs(listOfEntities);
-    }
-
-    public List<DentistAppointmentDTO> getAllAppointmentsAsDTO(){
-        return convertListOfEntitiesToListOfDTOs(getAllAppointments());
-    }
-
-    // these two last methods are exactly the same, I should redo them into one method using generics
+    // These last two methods are basically exactly the same, and they could be changed to just one method that takes in generics, but
+    // that would be a mistake. Right now it happened so that DTO and Entity are exactly the same, and can be basically used interchangeably, but
+    // in the future that might change and if it does change then one method with generics will break. So there should be two different methods that
+    // convert one object into another according to circumstances.
     public List<DentistAppointmentDTO> convertListOfEntitiesToListOfDTOs(List<DentistAppointmentEntity> listOfEntities){
 
         List<DentistAppointmentDTO> listOfDTOs = new ArrayList<>();

@@ -53,7 +53,8 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     @PostMapping("/")
     public String postRegisterForm(@Valid DentistAppointmentDTO dentistAppointmentDTO, SearchDTO searchDTO, BindingResult bindingResult, Model model) {
 
-        // how does this redirect work without giving it 'appointments' into the model??
+        // how does this redirect work without giving it 'appointments' into the model?? should redo everywhere where I can do it like that and use less code
+        // TODO
         if (bindingResult.hasErrors()) {
             return "form";
         }
@@ -150,7 +151,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
         }
 
 
-        List<DentistAppointmentDTO> dtoList = dataPersistenceService.search(searchDTO.getDentistName(), searchDTO.getStartingFromDate(), searchDTO.getEndOnDate());
+        List<DentistAppointmentDTO> dtoList = dataPersistenceService.getAppointmentsBySearch(searchDTO.getDentistName(), searchDTO.getStartingFromDate(), searchDTO.getEndOnDate());
         ListOfDentistAppointmentsDTO searchedListDTO = new ListOfDentistAppointmentsDTO(dtoList);
 
         for(DentistAppointmentDTO dto : searchedListDTO.getAppointments()) {
