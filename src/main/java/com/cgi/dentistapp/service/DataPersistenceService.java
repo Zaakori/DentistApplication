@@ -11,7 +11,7 @@ import java.util.*;
 
 @Service
 @Transactional
-public class DentistAppointmentService {
+public class DataPersistenceService {
 
     @Autowired
     private DentistAppointmentRepository repo;
@@ -27,6 +27,10 @@ public class DentistAppointmentService {
         repo.findAllAppointments().forEach(appointments::add);
 
         return appointments;
+    }
+
+    public List<Integer> getAllIds(){
+        return repo.findAllIds();
     }
 
     public void editAppointments(List<DentistAppointmentDTO> listOfDTOs){
@@ -47,45 +51,6 @@ public class DentistAppointmentService {
         }
     }
 
-    public boolean checkIfAppointmentIsAvailable(String dentistName, Date appointmentTime){
-
-        Set<DentistAppointmentEntity> appointments = new HashSet<>(getAllAppointments());
-        DentistAppointmentEntity newEntity = new DentistAppointmentEntity(dentistName, appointmentTime);
-
-        return !appointments.contains(newEntity);
-    }
-
-    public boolean checkIfAppointmentListIsAvailable(List<DentistAppointmentDTO> listOfDTOs){
-
-        List<DentistAppointmentEntity> inputEntityList = convertListOfDTOsToListOfEntities(listOfDTOs);
-        Set<DentistAppointmentEntity> inputEntitySet = new HashSet<>();
-
-        for(DentistAppointmentEntity inputEntity : inputEntityList){
-            if(inputEntitySet.contains(inputEntity)){
-                return false;
-            } else {
-                inputEntitySet.add(inputEntity);
-            }
-        }
-
-        return true;
-    }
-
-    public boolean checkIfIdsAreValid(String appointmentIds){
-
-        Set<Integer> setOfValidIds = new HashSet<>(repo.findAllAppointmentIds());
-
-        String[] ids = appointmentIds.split(",");
-
-        for(String nonValidatedId : ids){
-            if(!setOfValidIds.contains(Integer.parseInt(nonValidatedId))){
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     public List<DentistAppointmentDTO> getAllAppointmentsAsDTO(){
 
         List<DentistAppointmentEntity> entityList = getAllAppointments();
@@ -99,7 +64,7 @@ public class DentistAppointmentService {
         return DTOList;
     }
 
-    private List<DentistAppointmentEntity> convertListOfDTOsToListOfEntities(List<DentistAppointmentDTO> listOfDTOs){
+    public List<DentistAppointmentEntity> convertListOfDTOsToListOfEntities(List<DentistAppointmentDTO> listOfDTOs){
 
         List<DentistAppointmentEntity> listOfEntities = new ArrayList<>();
 

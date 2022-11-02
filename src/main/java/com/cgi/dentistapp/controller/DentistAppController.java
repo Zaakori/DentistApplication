@@ -3,7 +3,8 @@ package com.cgi.dentistapp.controller;
 import com.cgi.dentistapp.dto.DentistAppointmentDTO;
 import com.cgi.dentistapp.dto.ListOfDentistAppointmentsDTO;
 import com.cgi.dentistapp.enums.ListOfDentists;
-import com.cgi.dentistapp.service.DentistAppointmentService;
+import com.cgi.dentistapp.service.DataPersistenceService;
+import com.cgi.dentistapp.service.VerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,11 @@ import java.util.List;
 public class DentistAppController extends WebMvcConfigurerAdapter {
 
     @Autowired
-    private DentistAppointmentService service;
+    private DataPersistenceService dataPersistenceService;
+
+    @Autowired
+    private VerificationService verificationService;
+
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -35,7 +40,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/")
     public String showRegisterForm(DentistAppointmentDTO dentistAppointmentDTO, Model model){
-        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
+        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
         List<String> listOfDentists = ListOfDentists.getListOfDentists();
 
         model.addAttribute("appointments", appointmentListDTO);
@@ -51,11 +56,11 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
             return "form";
         }
 
-        if(!service.checkIfAppointmentIsAvailable(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentTime())){
+        if(!verificationService.checkIfAppointmentIsAvailable(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentTime())){
             String error = "This date and time has already been booked for this dentist! Please check Appointment Table to determine available spots.";
             model.addAttribute("error", error);
 
-            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
+            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
             List<String> listOfDentists = ListOfDentists.getListOfDentists();
 
             model.addAttribute("appointments", appointmentListDTO);
@@ -64,13 +69,13 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
             return "form";
         }
 
-        service.addAppointment(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentTime());
+        dataPersistenceService.addAppointment(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentTime());
         return "redirect:/successful_registration";
     }
 
     @GetMapping("/edit")
     public String showEditForm(Model model){
-        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
+        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
 
         model.addAttribute("form", appointmentListDTO);
         return "form_edit";
@@ -79,7 +84,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     @PostMapping("/edit")
     public String postEditForm(@ModelAttribute @Valid ListOfDentistAppointmentsDTO form, BindingResult bindingResult, Model model){
 
-        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
+        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
         model.addAttribute("form", appointmentListDTO);
 
         if(bindingResult.hasErrors()){
@@ -89,7 +94,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
             return "form_edit";
         }
 
-        if(!service.checkIfAppointmentListIsAvailable(form.getAppointments())){
+        if(!verificationService.checkIfAppointmentListIsAvailable(form.getAppointments())){
             String twoEqualAppointments = "There can not be two equal appointments!";
             model.addAttribute("twoEqualAppointments", twoEqualAppointments);
 
@@ -97,13 +102,13 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
         }
 
 
-        service.editAppointments(form.getAppointments());
+        dataPersistenceService.editAppointments(form.getAppointments());
         return "redirect:/successful_edit";
     }
 
     @GetMapping("/delete")
     public String showDeleteForm(Model model){
-        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
+        ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
 
         model.addAttribute("form", appointmentListDTO);
         return "form_delete";
@@ -112,9 +117,9 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     @PostMapping("/delete")
     public String postDeleteForm(@RequestParam(required = false) String appointmentIds, Model model){
 
-        if((appointmentIds == null) || (!service.checkIfIdsAreValid(appointmentIds))){
+        if((appointmentIds == null) || (!verificationService.checkIfIdsAreValid(appointmentIds))){
 
-            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(service.getAllAppointmentsAsDTO());
+            ListOfDentistAppointmentsDTO appointmentListDTO = new ListOfDentistAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
             model.addAttribute("form", appointmentListDTO);
 
             String error = "You did not choose any appointments!";
@@ -123,7 +128,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
             return "form_delete";
         }
 
-        service.deleteAppointments(appointmentIds);
+        dataPersistenceService.deleteAppointments(appointmentIds);
         return "redirect:/successful_delete";
     }
 
