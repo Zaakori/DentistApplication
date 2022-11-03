@@ -27,7 +27,6 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
 
     @Autowired
     private DataPersistenceService dataPersistenceService;
-
     @Autowired
     private VerificationService verificationService;
 
@@ -41,20 +40,15 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/")
     public String showRegisterForm(DentistAppointmentDTO dentistAppointmentDTO, SearchDTO searchDTO, Model model){
-        WrapperForListOfAppointmentsDTO wrapperDTO = new WrapperForListOfAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
-        List<String> listOfDentists = DentistNames.getListOfDentists();
-
-        model.addAttribute("appointments", wrapperDTO);
-        model.addAttribute("listOfDentists", listOfDentists);
-        model.addAttribute("search", new WrapperForListOfAppointmentsDTO());
+        modelSetupForHomeAndSearch(model, new WrapperForListOfAppointmentsDTO());
         return "form";
     }
 
     @PostMapping("/")
     public String postRegisterForm(@Valid DentistAppointmentDTO dentistAppointmentDTO, SearchDTO searchDTO, BindingResult bindingResult, Model model) {
 
-        // how does this redirect work without giving it 'appointments' into the model?? should redo everywhere where I can do it like that and use less code
-        // TODO
+        modelSetupForHomeAndSearch(model, new WrapperForListOfAppointmentsDTO());
+
         if (bindingResult.hasErrors()) {
             return "form";
         }
@@ -62,12 +56,6 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
         if(!verificationService.checkIfAppointmentIsAvailable(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentTime())){
             String error = "This date and time has already been booked for this dentist! Please check Appointment Table to determine available spots.";
             model.addAttribute("error", error);
-
-            WrapperForListOfAppointmentsDTO wrapperDTO = new WrapperForListOfAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
-            List<String> listOfDentists = DentistNames.getListOfDentists();
-
-            model.addAttribute("appointments", wrapperDTO);
-            model.addAttribute("listOfDentists", listOfDentists);
 
             return "form";
         }
@@ -78,17 +66,14 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/edit")
     public String showEditForm(Model model){
-        WrapperForListOfAppointmentsDTO wrapperDTO = new WrapperForListOfAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
-
-        model.addAttribute("form", wrapperDTO);
+        modelSetupForEditAndDelete(model);
         return "form_edit";
     }
 
     @PostMapping("/edit")
     public String postEditForm(@ModelAttribute @Valid WrapperForListOfAppointmentsDTO form, BindingResult bindingResult, Model model){
 
-        WrapperForListOfAppointmentsDTO wrapperDTO = new WrapperForListOfAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
-        model.addAttribute("form", wrapperDTO);
+        modelSetupForEditAndDelete(model);
 
         if(bindingResult.hasErrors()){
             String error = "Please enter a valid dentist name and a valid date!";
@@ -111,20 +96,16 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/delete")
     public String showDeleteForm(Model model){
-        WrapperForListOfAppointmentsDTO wrapperDTO = new WrapperForListOfAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
-
-        model.addAttribute("form", wrapperDTO);
+        modelSetupForEditAndDelete(model);
         return "form_delete";
     }
 
     @PostMapping("/delete")
     public String postDeleteForm(@RequestParam(required = false) String appointmentIds, Model model){
 
+        modelSetupForEditAndDelete(model);
+
         if((appointmentIds == null) || (appointmentIds.isEmpty()) || (!verificationService.checkIfIdsAreValid(appointmentIds))){
-
-            WrapperForListOfAppointmentsDTO wrapperDTO = new WrapperForListOfAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
-            model.addAttribute("form", wrapperDTO);
-
             String error = "You did not choose any appointments!";
             model.addAttribute("error", error);
 
@@ -138,31 +119,29 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     @PostMapping("/search")
     public String postSearchForm(@Valid SearchDTO searchDTO, DentistAppointmentDTO dentistAppointmentDTO, BindingResult bindingResult, Model model){
 
-        System.out.println("DATA: " + searchDTO.getDentistName() + ", " + searchDTO.getStartingFromDate() + ", " + searchDTO.getEndOnDate());
-
-        WrapperForListOfAppointmentsDTO wrapperDTO = new WrapperForListOfAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
-        List<String> listOfDentists = DentistNames.getListOfDentists();
-
-        model.addAttribute("appointments", wrapperDTO);
-        model.addAttribute("listOfDentists", listOfDentists);
-
         if(bindingResult.hasErrors()){
+            modelSetupForHomeAndSearch(model, new WrapperForListOfAppointmentsDTO());
             return "form";
         }
 
-
         List<DentistAppointmentDTO> dtoList = dataPersistenceService.getAppointmentsBySearch(searchDTO.getDentistName(), searchDTO.getStartingFromDate(), searchDTO.getEndOnDate());
-        WrapperForListOfAppointmentsDTO searchWrapperDTO = new WrapperForListOfAppointmentsDTO(dtoList);
+        WrapperForListOfAppointmentsDTO searchResultWrapperDTO = new WrapperForListOfAppointmentsDTO(dtoList);
 
-        for(DentistAppointmentDTO dto : searchWrapperDTO.getAppointments()) {
-            System.out.println(dto.getDentistName());
-            System.out.println(dto.getAppointmentTime());
-            System.out.println("----------------");
-        }
-
-        model.addAttribute("search", searchWrapperDTO);
+        modelSetupForHomeAndSearch(model, searchResultWrapperDTO);
         return "form";
     }
 
+    private void modelSetupForHomeAndSearch(Model model, WrapperForListOfAppointmentsDTO searchResultWrapperDTO){
+        WrapperForListOfAppointmentsDTO appointmentsWrapperDTO = new WrapperForListOfAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
+        List<String> dentistNames = DentistNames.getListOfDentists();
 
+        model.addAttribute("appointments", appointmentsWrapperDTO);
+        model.addAttribute("dentistNames", dentistNames);
+        model.addAttribute("searchResult", searchResultWrapperDTO);
+    }
+
+    private void modelSetupForEditAndDelete(Model model){
+        WrapperForListOfAppointmentsDTO wrapperDTO = new WrapperForListOfAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
+        model.addAttribute("form", wrapperDTO);
+    }
 }

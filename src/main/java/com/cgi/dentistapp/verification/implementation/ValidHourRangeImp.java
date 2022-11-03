@@ -17,6 +17,8 @@ public class ValidHourRangeImp implements ConstraintValidator<ValidHourRange, Da
     @Override
     public boolean isValid(Date pickedDate, ConstraintValidatorContext cxt) {
 
+        if(pickedDate == null) return false;
+
         int hours = getHours(pickedDate);
         int min = 9;
         int max = 17;
