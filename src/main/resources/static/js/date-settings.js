@@ -4,7 +4,7 @@ function getClosestValidDateTime() {
 
         var hh = today.getHours() +1; // get to closest full hour
         var dd = today.getDate();
-        var MM = today.getMonth() +1; // January is 0!
+        var MM = today.getMonth() +1;
         var yyyy = today.getFullYear();
 
         // we start taking appointments starting from 09:00 o'clock, up to 17:00 o'clock
