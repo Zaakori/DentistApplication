@@ -120,7 +120,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     @PostMapping("/delete")
     public String postDeleteForm(@RequestParam(required = false) String appointmentIds, Model model){
 
-        if((appointmentIds == null) || (!verificationService.checkIfIdsAreValid(appointmentIds))){
+        if((appointmentIds == null) || (appointmentIds.isEmpty()) || (!verificationService.checkIfIdsAreValid(appointmentIds))){
 
             WrapperForListOfAppointmentsDTO wrapperDTO = new WrapperForListOfAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
             model.addAttribute("form", wrapperDTO);
