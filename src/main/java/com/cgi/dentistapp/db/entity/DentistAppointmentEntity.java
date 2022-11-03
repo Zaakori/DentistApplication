@@ -14,21 +14,21 @@ public class DentistAppointmentEntity {
     @Column(name="DENTIST_NAME")
     private String dentistName;
 
-    @Column(name="APPOINTMENT_TIME")
-    private Date appointmentTime;
+    @Column(name="APPOINTMENT_DATETIME")
+    private Date appointmentDateTime;
 
     public DentistAppointmentEntity() {
     }
 
-    public DentistAppointmentEntity(String dentistName, Date appointmentTime) {
+    public DentistAppointmentEntity(String dentistName, Date appointmentDateTime) {
         this.dentistName = dentistName;
-        this.appointmentTime = appointmentTime;
+        this.appointmentDateTime = appointmentDateTime;
     }
 
-    public DentistAppointmentEntity(Long id, String dentistName, Date appointmentTime) {
+    public DentistAppointmentEntity(Long id, String dentistName, Date appointmentDateTime) {
         this.id = id;
         this.dentistName = dentistName;
-        this.appointmentTime = appointmentTime;
+        this.appointmentDateTime = appointmentDateTime;
     }
 
     public Long getId() {
@@ -47,12 +47,12 @@ public class DentistAppointmentEntity {
         this.dentistName = dentistName;
     }
 
-    public Date getAppointmentTime() {
-        return appointmentTime;
+    public Date getAppointmentDateTime() {
+        return appointmentDateTime;
     }
 
-    public void setAppointmentTime(Date appointmentTime) {
-        this.appointmentTime = appointmentTime;
+    public void setAppointmentDateTime(Date appointmentDateTime) {
+        this.appointmentDateTime = appointmentDateTime;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class DentistAppointmentEntity {
 
         DentistAppointmentEntity other = (DentistAppointmentEntity) o;
 
-        return this.dentistName.equals(other.dentistName) && this.appointmentTime.equals(other.appointmentTime);
+        return this.dentistName.equals(other.dentistName) && this.appointmentDateTime.equals(other.appointmentDateTime);
     }
 
     @Override
@@ -80,8 +80,8 @@ public class DentistAppointmentEntity {
             result = 31 * result * dentistName.hashCode();
         }
 
-        if(appointmentTime != null){
-            result = 31 * result * appointmentTime.hashCode();
+        if(appointmentDateTime != null){
+            result = 31 * result * appointmentDateTime.hashCode();
         }
 
         return result;

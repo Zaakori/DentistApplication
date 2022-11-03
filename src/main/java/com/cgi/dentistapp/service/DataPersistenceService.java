@@ -48,7 +48,7 @@ public class DataPersistenceService {
         List<DentistAppointmentEntity> listOfEntities = convertListOfDTOsToListOfEntities(listOfDTOs);
 
         for(DentistAppointmentEntity entity : listOfEntities){
-            repo.updateEntity(entity.getDentistName(), entity.getAppointmentTime(), entity.getId());
+            repo.updateEntity(entity.getDentistName(), entity.getAppointmentDateTime(), entity.getId());
         }
     }
 
@@ -70,7 +70,7 @@ public class DataPersistenceService {
         List<DentistAppointmentDTO> listOfDTOs = new ArrayList<>();
 
         for(DentistAppointmentEntity entity : listOfEntities){
-            DentistAppointmentDTO DTO = new DentistAppointmentDTO(entity.getId(), entity.getDentistName(), entity.getAppointmentTime());
+            DentistAppointmentDTO DTO = new DentistAppointmentDTO(entity.getId(), entity.getDentistName(), entity.getAppointmentDateTime());
             listOfDTOs.add(DTO);
         }
 
@@ -82,7 +82,7 @@ public class DataPersistenceService {
         List<DentistAppointmentEntity> listOfEntities = new ArrayList<>();
 
         for(DentistAppointmentDTO DTO : listOfDTOs){
-            DentistAppointmentEntity entity = new DentistAppointmentEntity(DTO.getId(), DTO.getDentistName(), DTO.getAppointmentTime());
+            DentistAppointmentEntity entity = new DentistAppointmentEntity(DTO.getId(), DTO.getDentistName(), DTO.getAppointmentDateTime());
             listOfEntities.add(entity);
         }
 

@@ -37,15 +37,15 @@ public class VerificationServiceTest {
         repo.deleteAll();
 
         String dentistName = "Equitia Clara";
-        Date appointmentDateTime = new Date();
+        Date date = new Date();
 
         try{
-            appointmentDateTime = new SimpleDateFormat("yyyy-MM-dd hh").parse("2023-03-05 10");
+            date = new SimpleDateFormat("yyyy-MM-dd hh").parse("2023-03-05 10");
         } catch (ParseException e){
             e.printStackTrace();
         }
 
-        Assert.assertTrue(verificationService.checkIfAppointmentIsAvailable(dentistName, appointmentDateTime));
+        Assert.assertTrue(verificationService.checkIfAppointmentIsAvailable(dentistName, date));
     }
 
     // INTEGRATION TEST
@@ -57,22 +57,22 @@ public class VerificationServiceTest {
         String dentistName2 = "Horatius Fulgencio";
         String registeredDentistName = "Galerius Maximus";
 
-        Date appointmentDateTime1 = new Date();
-        Date appointmentDateTime2 = new Date();
-        Date registeredAppointmentDateTime = new Date();
+        Date date1 = new Date();
+        Date date2 = new Date();
+        Date registeredDate = new Date();
 
         try{
-            appointmentDateTime1 = new SimpleDateFormat("yyyy-MM-dd hh").parse("2023-02-05 10");
-            appointmentDateTime2 = new SimpleDateFormat("yyyy-MM-dd hh").parse("2023-03-05 12");
-            registeredAppointmentDateTime = new SimpleDateFormat("yyyy-MM-dd hh").parse("2023-02-14 16");
+            date1 = new SimpleDateFormat("yyyy-MM-dd hh").parse("2023-02-05 10");
+            date2 = new SimpleDateFormat("yyyy-MM-dd hh").parse("2023-03-05 12");
+            registeredDate = new SimpleDateFormat("yyyy-MM-dd hh").parse("2023-02-14 16");
         } catch (ParseException e){
             e.printStackTrace();
         }
 
-        dataPersistenceService.addAppointment(dentistName1, appointmentDateTime1);
-        dataPersistenceService.addAppointment(dentistName2, appointmentDateTime2);
+        dataPersistenceService.addAppointment(dentistName1, date1);
+        dataPersistenceService.addAppointment(dentistName2, date2);
 
-        Assert.assertTrue(verificationService.checkIfAppointmentIsAvailable(registeredDentistName, registeredAppointmentDateTime));
+        Assert.assertTrue(verificationService.checkIfAppointmentIsAvailable(registeredDentistName, registeredDate));
     }
 
     // INTEGRATION TEST
@@ -81,17 +81,17 @@ public class VerificationServiceTest {
         repo.deleteAll();
 
         String dentistName = "Equitia Clara";
-        Date appointmentDateTime = new Date();
+        Date date = new Date();
 
         try{
-            appointmentDateTime = new SimpleDateFormat("yyyy-MM-dd hh").parse("2023-03-05 10");
+            date = new SimpleDateFormat("yyyy-MM-dd hh").parse("2023-03-05 10");
         } catch (ParseException e){
             e.printStackTrace();
         }
 
-        dataPersistenceService.addAppointment(dentistName, appointmentDateTime);
+        dataPersistenceService.addAppointment(dentistName, date);
 
-        Assert.assertFalse(verificationService.checkIfAppointmentIsAvailable(dentistName, appointmentDateTime));
+        Assert.assertFalse(verificationService.checkIfAppointmentIsAvailable(dentistName, date));
     }
 
     @Test

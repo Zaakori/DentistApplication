@@ -27,7 +27,7 @@
         </tr>
         <tr th:each="appointment, itemStat : ${form.appointments}">
           <td><span th:text="${appointment.dentistName}" > Dentist </span></td>
-          <td><span th:text="${appointment.appointmentTime}" > Appointment </span></td>
+          <td><span th:text="${appointment.appointmentDateTime}" > Appointment </span></td>
           <td><input type="checkbox" name="appointmentIds" th:value="${appointment.getId()}" /></td>
         </tr>
         </tbody>

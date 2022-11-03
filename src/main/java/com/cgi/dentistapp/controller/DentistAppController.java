@@ -53,14 +53,14 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
             return "form";
         }
 
-        if(!verificationService.checkIfAppointmentIsAvailable(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentTime())){
+        if(!verificationService.checkIfAppointmentIsAvailable(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentDateTime())){
             String error = "This date and time has already been booked for this dentist! Please check Appointment Table to determine available spots.";
             model.addAttribute("error", error);
 
             return "form";
         }
 
-        dataPersistenceService.addAppointment(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentTime());
+        dataPersistenceService.addAppointment(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentDateTime());
         return "redirect:/successful_registration";
     }
 
