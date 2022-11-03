@@ -4,41 +4,43 @@
     <script type="text/javascript" th:src="@{/js/date-settings.js}"></script>
 </head>
 <body>
-<input type="button" id="tableButton" onclick="location.href='/'" value="Back to Registration" />
-<p></p>
-<div id="appointmentTable">
-    <form action="#" th:action="@{/edit}" th:object="${form}" method="post">
-        <fieldset>
-            <h2>Edit Appointments</h2>
-            <p></p>
-            <p>* If you wish to drop your made changes please click 'Reset'</p>
-            <input type="submit" id="submitButton" th:value="EDIT"/>
-            <input type="reset" id="resetButton" name="reset" th:value="Reset"/>
-            <p></p>
-            <table>
-                <thead>
-                <tr>
-                    <th></th>
-                    <th> Dentist </th>
-                    <th> Appointment </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:if="${form.empty()}">
-                    <td colspan="2"> No Appointments have been made </td>
-                </tr>
-                <tr th:each="appointment, itemStat : ${form.appointments}">
-                    <td><input type="hidden" th:name="|appointments[${itemStat.index}].id|" th:value="${appointment.getId()}"/></td>
-                    <td><input th:name="|appointments[${itemStat.index}].dentistName|" th:value="${appointment.getDentistName()}"/></td>
-                    <td><input type="datetime-local" step="3600" th:name="|appointments[${itemStat.index}].appointmentDateTime|" th:value="${appointment.getAppointmentDateTime()}"/></td>
-                </tr>
-                </tbody>
-            </table>
-        </fieldset>
-    </form>
-    <h3 th:text="${error}"></h3>
-    <h3 th:text="${twoEqualAppointments}"></h3>
-</div>
-</body>
+    <div id="buttonBack">
+        <input type="button" id="tableButton" onclick="location.href='/'" value="Back to Registration" />
+        <p></p>
+    </div>
+    <div id="editForm">
+        <form action="#" th:action="@{/edit}" th:object="${form}" method="post">
+            <fieldset>
+                    <h2>Edit Appointments</h2>
+                    <p></p>
+                    <p>* If you wish to drop your made changes please click 'Reset'</p>
+                    <input type="submit" id="submitButton" th:value="EDIT"/>
+                    <input type="reset" id="resetButton" name="reset" th:value="Reset"/>
+                    <p></p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th> Dentist </th>
+                            <th> Appointment </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${form.empty()}">
+                            <td colspan="2"> No Appointments have been made </td>
+                        </tr>
+                        <tr th:each="appointment, itemStat : ${form.appointments}">
+                            <td><input type="hidden" th:name="|appointments[${itemStat.index}].id|" th:value="${appointment.getId()}"/></td>
+                            <td><input th:name="|appointments[${itemStat.index}].dentistName|" th:value="${appointment.getDentistName()}"/></td>
+                            <td><input type="datetime-local" step="3600" th:name="|appointments[${itemStat.index}].appointmentDateTime|" th:value="${appointment.getAppointmentDateTime()}"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </form>
+        <h3 th:text="${error}"></h3>
+        <h3 th:text="${twoEqualAppointments}"></h3>
+    </div>
+    </body>
 </html>
 <!-- taken from https://www.baeldung.com/thymeleaf-list -->

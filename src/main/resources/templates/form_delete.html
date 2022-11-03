@@ -1,40 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <script type="text/javascript" th:src="@{/js/date-settings.js}"></script>
+    <script type="text/javascript" th:src="@{/js/date-settings.js}"></script>
 </head>
 <body>
-<input type="button" id="tableButton" onclick="location.href='/'" value="Back to Registration" />
-<p></p>
-<div id="appointmentTable">
-  <form action="#" th:action="@{/delete}" method="post">
-    <fieldset>
-      <h2>Delete Appointments</h2>
-      <p></p>
-      <p>* Choose which appointments you want to delete by using checkbox</p>
-      <input type="submit" id="submitButton" th:value="DELETE"/>
-      <p></p>
-      <table>
-        <thead>
-        <tr>
-          <th> Dentist </th>
-          <th> Appointment </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:if="${form.empty()}">
-          <td colspan="2"> No Appointments have been made </td>
-        </tr>
-        <tr th:each="appointment, itemStat : ${form.appointments}">
-          <td><span th:text="${appointment.dentistName}" > Dentist </span></td>
-          <td><span th:text="${appointment.appointmentDateTime}" > Appointment </span></td>
-          <td><input type="checkbox" name="appointmentIds" th:value="${appointment.getId()}" /></td>
-        </tr>
-        </tbody>
-      </table>
-    </fieldset>
-  </form>
-  <h3 th:text="${error}"></h3>
-</div>
+    <div id="buttonBack">
+        <input type="button" id="tableButton" onclick="location.href='/'" value="Back to Registration" />
+        <p></p>
+    </div>
+    <div id="deleteForm">
+        <form action="#" th:action="@{/delete}" method="post">
+            <fieldset>
+                    <h2>Delete Appointments</h2>
+                    <p></p>
+                    <p>* Choose which appointments you want to delete by using checkbox</p>
+                    <input type="submit" id="submitButton" th:value="DELETE"/>
+                    <p></p>
+                <table>
+                    <thead>
+                        <tr>
+                          <th> Dentist </th>
+                          <th> Appointment </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${form.empty()}">
+                          <td colspan="2"> No Appointments have been made </td>
+                        </tr>
+                        <tr th:each="appointment, itemStat : ${form.appointments}">
+                          <td><span th:text="${appointment.dentistName}" > Dentist </span></td>
+                          <td><span th:text="${appointment.appointmentDateTime}" > Appointment </span></td>
+                          <td><input type="checkbox" name="appointmentIds" th:value="${appointment.getId()}" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </form>
+        <h3 th:text="${error}"></h3>
+    </div>
 </body>
 </html>
