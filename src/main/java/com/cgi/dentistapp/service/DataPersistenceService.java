@@ -16,24 +16,54 @@ public class DataPersistenceService {
     @Autowired
     private DentistAppointmentRepository repo;
 
-    public void addAppointment(String dentistName, Date appointmentTime) {
-        DentistAppointmentEntity entity = new DentistAppointmentEntity(dentistName, appointmentTime);
+    /**
+     * Creates a new Entity with provided parameters and saves it to the database through repository.
+     *
+     * @param dentistName dentist name for Entity's field 'dentistName'
+     * @param appointmentDateTime date and time for Entity's field 'appointmentDateTime'
+     */
+    public void addAppointment(String dentistName, Date appointmentDateTime) {
+        DentistAppointmentEntity entity = new DentistAppointmentEntity(dentistName, appointmentDateTime);
         repo.save(entity);
     }
 
+    /**
+     * Returns all Entities from the database through repository.
+     *
+     * @return List of Entity-s
+     */
     public List<DentistAppointmentEntity> getAllAppointments(){
         return new ArrayList<>(repo.findAllAppointments());
     }
 
+    /**
+     * Gets all Entities from the database and returns them as DTO-s.
+     *
+     * @return List of DTO-s
+     */
     public List<DentistAppointmentDTO> getAllAppointmentsAsDTO(){
         return convertListOfEntitiesToListOfDTOs(getAllAppointments());
     }
 
+    /**
+     * Returns all Ids from the database through repository.
+     *
+     * @return List of IDs
+     */
     public List<Integer> getAllIds(){
         return repo.findAllIds();
     }
 
-    public List<DentistAppointmentDTO> getAppointmentsBySearch(String dentistName, Date startingFromDate, Date endOnDate){
+    /**
+     * Returns list of searched DTO-s from the database through repository.
+     * If parameter 'dentistName' value was "0", then sets the dentist name to null.
+     *
+     * @param dentistName name of the dentist that is being searched
+     * @param startingFromDate starting date, searched date must be same (equal) or later (bigger)
+     * @param endOnDate end date, searched date must be same (equal) or earlier (smaller)
+     * @return List of DTO-s
+     */
+    public List<DentistAppointmentDTO> getAppointmentDTOsBySearch(String dentistName, Date startingFromDate, Date endOnDate){
 
         String name = dentistName;
 
@@ -42,6 +72,11 @@ public class DataPersistenceService {
         return convertListOfEntitiesToListOfDTOs(repo.findAppointmentsBySearch(name, startingFromDate, endOnDate));
     }
 
+    /**
+     * Converts list of DTO-s into list of Entities and then one by one updates the Entities in the database through repository.
+     *
+     * @param listOfDTOs list of DTO-s
+     */
     public void editAppointments(List<DentistAppointmentDTO> listOfDTOs){
 
         List<DentistAppointmentEntity> listOfEntities = convertListOfDTOsToListOfEntities(listOfDTOs);
@@ -51,6 +86,12 @@ public class DataPersistenceService {
         }
     }
 
+    /**
+     * Makes an array of Strings by splitting stringOfIds using regex "," and then one by one
+     * deletes Entities with corresponding ID-s.
+     *
+     * @param stringOfIds String that contains ID-s in it separated by comma, ex. "1,3,22"
+     */
     public void deleteAppointments(String stringOfIds){
 
         String[] ids = stringOfIds.split(",");

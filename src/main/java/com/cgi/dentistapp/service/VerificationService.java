@@ -16,14 +16,28 @@ public class VerificationService {
     @Autowired
     private DataPersistenceService dataPersistenceService;
 
-    public boolean checkIfAppointmentIsAvailable(String dentistName, Date appointmentTime){
+    /**
+     * Creates a new Entity with provided parameters and checks if the same exact Entity (with same dentistName and appointmentDateTime)
+     * is already present in the database.
+     *
+     * @param dentistName dentist name for Entity's field 'dentistName'
+     * @param appointmentDateTime date and time for Entity's field 'appointmentDateTime'
+     * @return returns 'true' if no same Entity is present, 'false' is same Entity is already present in the database
+     */
+    public boolean checkIfAppointmentIsAvailable(String dentistName, Date appointmentDateTime){
 
         Set<DentistAppointmentEntity> appointments = new HashSet<>(dataPersistenceService.getAllAppointments());
-        DentistAppointmentEntity newEntity = new DentistAppointmentEntity(dentistName, appointmentTime);
+        DentistAppointmentEntity newEntity = new DentistAppointmentEntity(dentistName, appointmentDateTime);
 
         return !appointments.contains(newEntity);
     }
 
+    /**
+     * Checks given list of DTOs for duplicates. A duplicate in this case is a DTO with the same 'dentistName' and 'appointmentDateTime'.
+     *
+     * @param listOfDTOs list of DTO-s
+     * @return returns 'true' if no duplicates have been found, 'false' list contains duplicates
+     */
     public boolean checkIfAppointmentListIsValid(List<DentistAppointmentDTO> listOfDTOs){
 
         Set<DentistAppointmentDTO> appointmentSet = new HashSet<>();
@@ -39,6 +53,12 @@ public class VerificationService {
         return true;
     }
 
+    /**
+     * Checks whether all ID-s in given String are present in the database.
+     *
+     * @param idsString String that contains ID-s in it separated by comma, ex. "1,3,22"
+     * @return returns 'true' if all ID-s are present, 'false' if any ID-s are not present in the database
+     */
     public boolean checkIfIdsAreValid(String idsString){
 
         String[] ids = idsString.split(",");

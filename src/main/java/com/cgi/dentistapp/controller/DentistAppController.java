@@ -123,7 +123,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
             return "form";
         }
 
-        List<DentistAppointmentDTO> searchResultList = dataPersistenceService.getAppointmentsBySearch(searchDTO.getDentistName(), searchDTO.getStartingFromDate(), searchDTO.getEndOnDate());
+        List<DentistAppointmentDTO> searchResultList = dataPersistenceService.getAppointmentDTOsBySearch(searchDTO.getDentistName(), searchDTO.getStartingFromDate(), searchDTO.getEndOnDate());
         AppointmentListWrapperDTO searchResultWrapperDTO = new AppointmentListWrapperDTO(searchResultList);
 
         modelSetupForHomeAndSearch(model, searchResultWrapperDTO);

@@ -13,6 +13,12 @@ public class ValidHourRangeImp implements ConstraintValidator<ValidHourRange, Da
     public void initialize(ValidHourRange presentOrFuture) {
     }
 
+    /**
+     * Checks if hour in the parameter pickedDate is between (or equal to) 09:00 and 17:00.
+     *
+     * @param pickedDate Date, that we validate the hour of
+     * @return returns 'true' if hour is between (or equal to) 9 and 17, if not then 'false'
+     */
     @Override
     public boolean isValid(Date pickedDate, ConstraintValidatorContext cxt) {
 
