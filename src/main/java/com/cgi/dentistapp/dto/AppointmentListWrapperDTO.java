@@ -4,16 +4,16 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WrapperForListOfAppointmentsDTO {
+public class AppointmentListWrapperDTO {
 
     @Valid
     private List<DentistAppointmentDTO> appointments;
 
-    public WrapperForListOfAppointmentsDTO() {
+    public AppointmentListWrapperDTO() {
         this.appointments = new ArrayList<>();
     }
 
-    public WrapperForListOfAppointmentsDTO(List<DentistAppointmentDTO> appointments) {
+    public AppointmentListWrapperDTO(List<DentistAppointmentDTO> appointments) {
         this.appointments = appointments;
     }
 
@@ -23,10 +23,6 @@ public class WrapperForListOfAppointmentsDTO {
 
     public void setAppointments(List<DentistAppointmentDTO> appointments) {
         this.appointments = appointments;
-    }
-
-    public void addAppointment(DentistAppointmentDTO appointment){
-        appointments.add(appointment);
     }
 
     public boolean empty(){

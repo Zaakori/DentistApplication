@@ -132,7 +132,7 @@ public class DentistAppApplicationTests {
         listOfDTOs.add(new DentistAppointmentDTO(dentistName2, date2));
         listOfDTOs.add(new DentistAppointmentDTO(dentistName2, date3));
 
-        Assert.assertTrue("Incorrect return value for all different appointments", verificationService.checkIfAppointmentListIsAvailable(listOfDTOs));
+        Assert.assertTrue("Incorrect return value for all different appointments", verificationService.checkIfAppointmentListIsValid(listOfDTOs));
     }
 
     @Test
@@ -156,7 +156,7 @@ public class DentistAppApplicationTests {
         listOfDTOs.add(new DentistAppointmentDTO(dentistName2, date2));
         listOfDTOs.add(new DentistAppointmentDTO(dentistName2, date2));
 
-        Assert.assertFalse("Incorrect return value for two same appointments", verificationService.checkIfAppointmentListIsAvailable(listOfDTOs));
+        Assert.assertFalse("Incorrect return value for two same appointments", verificationService.checkIfAppointmentListIsValid(listOfDTOs));
     }
 
     // INTEGRATION TEST
@@ -164,7 +164,9 @@ public class DentistAppApplicationTests {
     public void checkIfIdsAreValid_allIdsPresentInDB(){
         repo.deleteAll();
 
-        List<Integer> verifiedIds = setupForIdTesting();
+        setupForIdTesting();
+
+        List<Integer> verifiedIds = repo.findAllIds();
         StringBuilder sb = new StringBuilder();
 
         for(int i = 0; i < verifiedIds.size(); i++){
@@ -185,7 +187,9 @@ public class DentistAppApplicationTests {
     public void checkIfIdsAreValid_IdNotPresentInDB(){
         repo.deleteAll();
 
-        List<Integer> verifiedIds = setupForIdTesting();
+        setupForIdTesting();
+
+        List<Integer> verifiedIds = repo.findAllIds();
         String ids = Integer.toString(verifiedIds.get(verifiedIds.size() - 1) + 1);
 
         Assert.assertFalse(verificationService.checkIfIdsAreValid(ids));
@@ -203,7 +207,7 @@ public class DentistAppApplicationTests {
         Assert.assertFalse(verificationService.checkIfIdsAreValid(ids));
     }
 
-    private List<Integer> setupForIdTesting(){
+    private void setupForIdTesting(){
 
         String dentistName1 = "Equitia Clara";
         String dentistName2 = "Horatius Fulgencio";
@@ -224,8 +228,6 @@ public class DentistAppApplicationTests {
         dataPersistenceService.addAppointment(dentistName1, date1);
         dataPersistenceService.addAppointment(dentistName2, date2);
         dataPersistenceService.addAppointment(dentistName3, date3);
-
-        return repo.findAllIds();
     }
 
 

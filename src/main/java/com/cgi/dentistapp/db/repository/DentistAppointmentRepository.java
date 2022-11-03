@@ -22,10 +22,10 @@ public interface DentistAppointmentRepository extends CrudRepository<DentistAppo
             "AND (appointment_datetime >= :startingFromDate OR :startingFromDate IS NULL) " +
             "AND (appointment_datetime <= :endOnDate OR :endOnDate IS NULL) " +
             "ORDER BY appointment_datetime", nativeQuery = true)
-    List<DentistAppointmentEntity> search(@Param("dentistName") String dentistName, @Param("startingFromDate") Date startingFromDate, @Param("endOnDate") Date endOnDate);
+    List<DentistAppointmentEntity> findAppointmentsBySearch(@Param("dentistName") String dentistName, @Param("startingFromDate") Date startingFromDate, @Param("endOnDate") Date endOnDate);
 
     @Transactional
     @Modifying
     @Query(value = "UPDATE dentist_appointment SET dentist_name = ?1, appointment_datetime = ?2 WHERE id = ?3", nativeQuery = true)
-    void updateEntity(String dentistName, Date appointmentDateTime, Long entityId);
+    void updateEntity(String dentistName, Date appointmentDateTime, Long id);
 }

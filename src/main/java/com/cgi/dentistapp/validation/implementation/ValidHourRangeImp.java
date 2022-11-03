@@ -1,12 +1,11 @@
-package com.cgi.dentistapp.verification.implementation;
+package com.cgi.dentistapp.validation.implementation;
 
-import com.cgi.dentistapp.verification.interfaces.ValidHourRange;
+import com.cgi.dentistapp.validation.interfaces.ValidHourRange;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Calendar;
 import java.util.Date;
-
 
 public class ValidHourRangeImp implements ConstraintValidator<ValidHourRange, Date> {
 

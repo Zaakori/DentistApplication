@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.*;
 
-// DONE
 @Service
 @Transactional
 public class DataPersistenceService {
@@ -40,7 +39,7 @@ public class DataPersistenceService {
 
         if(dentistName.equals("0")) name = null;
 
-        return convertListOfEntitiesToListOfDTOs(repo.search(name, startingFromDate, endOnDate));
+        return convertListOfEntitiesToListOfDTOs(repo.findAppointmentsBySearch(name, startingFromDate, endOnDate));
     }
 
     public void editAppointments(List<DentistAppointmentDTO> listOfDTOs){

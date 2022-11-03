@@ -1,7 +1,7 @@
 package com.cgi.dentistapp.controller;
 
 import com.cgi.dentistapp.dto.DentistAppointmentDTO;
-import com.cgi.dentistapp.dto.WrapperForListOfAppointmentsDTO;
+import com.cgi.dentistapp.dto.AppointmentListWrapperDTO;
 import com.cgi.dentistapp.dto.SearchDTO;
 import com.cgi.dentistapp.enums.DentistNames;
 import com.cgi.dentistapp.service.DataPersistenceService;
@@ -40,22 +40,22 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
 
     @GetMapping("/")
     public String showRegisterForm(DentistAppointmentDTO dentistAppointmentDTO, SearchDTO searchDTO, Model model){
-        modelSetupForHomeAndSearch(model, new WrapperForListOfAppointmentsDTO());
+        modelSetupForHomeAndSearch(model, new AppointmentListWrapperDTO());
         return "form";
     }
 
     @PostMapping("/")
     public String postRegisterForm(@Valid DentistAppointmentDTO dentistAppointmentDTO, SearchDTO searchDTO, BindingResult bindingResult, Model model) {
 
-        modelSetupForHomeAndSearch(model, new WrapperForListOfAppointmentsDTO());
+        modelSetupForHomeAndSearch(model, new AppointmentListWrapperDTO());
 
         if (bindingResult.hasErrors()) {
             return "form";
         }
 
         if(!verificationService.checkIfAppointmentIsAvailable(dentistAppointmentDTO.getDentistName(), dentistAppointmentDTO.getAppointmentDateTime())){
-            String error = "This date and time has already been booked for this dentist! Please check Appointment Table to determine available spots.";
-            model.addAttribute("error", error);
+            String errorDateTimeBooked = "This date and time has already been booked for this dentist! Please check Appointment Table to determine available spots.";
+            model.addAttribute("errorDateTimeBooked", errorDateTimeBooked);
 
             return "form";
         }
@@ -71,24 +71,23 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     }
 
     @PostMapping("/edit")
-    public String postEditForm(@ModelAttribute @Valid WrapperForListOfAppointmentsDTO form, BindingResult bindingResult, Model model){
+    public String postEditForm(@ModelAttribute @Valid AppointmentListWrapperDTO form, BindingResult bindingResult, Model model){
 
         modelSetupForEditAndDelete(model);
 
         if(bindingResult.hasErrors()){
-            String error = "Please enter a valid dentist name and a valid date!";
-            model.addAttribute("error", error);
+            String errorNonValidDentistOrDate = "Please enter a valid dentist name and a valid date!";
+            model.addAttribute("errorNonValidDentistOrDate", errorNonValidDentistOrDate);
 
             return "form_edit";
         }
 
-        if(!verificationService.checkIfAppointmentListIsAvailable(form.getAppointments())){
-            String twoEqualAppointments = "There can not be two equal appointments!";
-            model.addAttribute("twoEqualAppointments", twoEqualAppointments);
+        if(!verificationService.checkIfAppointmentListIsValid(form.getAppointments())){
+            String errorTwoEqualAppointments = "There can not be two equal appointments!";
+            model.addAttribute("errorTwoEqualAppointments", errorTwoEqualAppointments);
 
             return "form_edit";
         }
-
 
         dataPersistenceService.editAppointments(form.getAppointments());
         return "redirect:/successful_edit";
@@ -106,8 +105,8 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
         modelSetupForEditAndDelete(model);
 
         if((appointmentIds == null) || (appointmentIds.isEmpty()) || (!verificationService.checkIfIdsAreValid(appointmentIds))){
-            String error = "You did not choose any appointments!";
-            model.addAttribute("error", error);
+            String errorNoChosenAppointments = "You did not choose any appointments!";
+            model.addAttribute("errorNoChosenAppointments", errorNoChosenAppointments);
 
             return "form_delete";
         }
@@ -120,19 +119,19 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     public String postSearchForm(@Valid SearchDTO searchDTO, DentistAppointmentDTO dentistAppointmentDTO, BindingResult bindingResult, Model model){
 
         if(bindingResult.hasErrors()){
-            modelSetupForHomeAndSearch(model, new WrapperForListOfAppointmentsDTO());
+            modelSetupForHomeAndSearch(model, new AppointmentListWrapperDTO());
             return "form";
         }
 
-        List<DentistAppointmentDTO> dtoList = dataPersistenceService.getAppointmentsBySearch(searchDTO.getDentistName(), searchDTO.getStartingFromDate(), searchDTO.getEndOnDate());
-        WrapperForListOfAppointmentsDTO searchResultWrapperDTO = new WrapperForListOfAppointmentsDTO(dtoList);
+        List<DentistAppointmentDTO> searchResultList = dataPersistenceService.getAppointmentsBySearch(searchDTO.getDentistName(), searchDTO.getStartingFromDate(), searchDTO.getEndOnDate());
+        AppointmentListWrapperDTO searchResultWrapperDTO = new AppointmentListWrapperDTO(searchResultList);
 
         modelSetupForHomeAndSearch(model, searchResultWrapperDTO);
         return "form";
     }
 
-    private void modelSetupForHomeAndSearch(Model model, WrapperForListOfAppointmentsDTO searchResultWrapperDTO){
-        WrapperForListOfAppointmentsDTO appointmentsWrapperDTO = new WrapperForListOfAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
+    private void modelSetupForHomeAndSearch(Model model, AppointmentListWrapperDTO searchResultWrapperDTO){
+        AppointmentListWrapperDTO appointmentsWrapperDTO = new AppointmentListWrapperDTO(dataPersistenceService.getAllAppointmentsAsDTO());
         List<String> dentistNames = DentistNames.getListOfDentists();
 
         model.addAttribute("appointments", appointmentsWrapperDTO);
@@ -141,7 +140,7 @@ public class DentistAppController extends WebMvcConfigurerAdapter {
     }
 
     private void modelSetupForEditAndDelete(Model model){
-        WrapperForListOfAppointmentsDTO wrapperDTO = new WrapperForListOfAppointmentsDTO(dataPersistenceService.getAllAppointmentsAsDTO());
+        AppointmentListWrapperDTO wrapperDTO = new AppointmentListWrapperDTO(dataPersistenceService.getAllAppointmentsAsDTO());
         model.addAttribute("form", wrapperDTO);
     }
 }

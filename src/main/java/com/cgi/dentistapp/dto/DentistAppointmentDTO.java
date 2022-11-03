@@ -1,7 +1,7 @@
 package com.cgi.dentistapp.dto;
 
-import com.cgi.dentistapp.verification.interfaces.ValidDentist;
-import com.cgi.dentistapp.verification.interfaces.ValidHourRange;
+import com.cgi.dentistapp.validation.interfaces.ValidDentist;
+import com.cgi.dentistapp.validation.interfaces.ValidHourRange;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Future;

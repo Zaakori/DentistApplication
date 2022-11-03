@@ -14,42 +14,39 @@ import java.util.Set;
 public class VerificationService {
 
     @Autowired
-    private DataPersistenceService service;
+    private DataPersistenceService dataPersistenceService;
 
-    // this method is for checking appointment availability for one new appointment against all appointments taken from database
     public boolean checkIfAppointmentIsAvailable(String dentistName, Date appointmentTime){
 
-        Set<DentistAppointmentEntity> appointments = new HashSet<>(service.getAllAppointments());
+        Set<DentistAppointmentEntity> appointments = new HashSet<>(dataPersistenceService.getAllAppointments());
         DentistAppointmentEntity newEntity = new DentistAppointmentEntity(dentistName, appointmentTime);
 
         return !appointments.contains(newEntity);
     }
 
-    // this method is checking appointment availability too, but we get all the appointments right away and just check if there are duplicates
-    public boolean checkIfAppointmentListIsAvailable(List<DentistAppointmentDTO> listOfDTOs){
+    public boolean checkIfAppointmentListIsValid(List<DentistAppointmentDTO> listOfDTOs){
 
-        List<DentistAppointmentEntity> inputEntityList = service.convertListOfDTOsToListOfEntities(listOfDTOs);
-        Set<DentistAppointmentEntity> inputEntitySet = new HashSet<>();
+        Set<DentistAppointmentDTO> appointmentSet = new HashSet<>();
 
-        for(DentistAppointmentEntity inputEntity : inputEntityList){
-            if(inputEntitySet.contains(inputEntity)){
+        for(DentistAppointmentDTO appointment : listOfDTOs){
+            if(appointmentSet.contains(appointment)){
                 return false;
             } else {
-                inputEntitySet.add(inputEntity);
+                appointmentSet.add(appointment);
             }
         }
 
         return true;
     }
 
-    public boolean checkIfIdsAreValid(String appointmentIds){
+    public boolean checkIfIdsAreValid(String idsString){
 
-        String[] ids = appointmentIds.split(",");
-        Set<Integer> setOfValidIds = new HashSet<>(service.getAllIds());
+        String[] ids = idsString.split(",");
+        Set<Integer> setOfValidIds = new HashSet<>(dataPersistenceService.getAllIds());
 
         try{
-            for(String nonValidatedId : ids){
-                if(!setOfValidIds.contains(Integer.parseInt(nonValidatedId))){
+            for(String id : ids){
+                if(!setOfValidIds.contains(Integer.parseInt(id))){
                     return false;
                 }
             }

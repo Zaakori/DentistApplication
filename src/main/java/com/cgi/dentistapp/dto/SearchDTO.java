@@ -1,10 +1,7 @@
 package com.cgi.dentistapp.dto;
 
-import com.cgi.dentistapp.verification.interfaces.ValidDentist;
-import com.cgi.dentistapp.verification.interfaces.ValidHourRange;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class SearchDTO {
