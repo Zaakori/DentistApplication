@@ -14,23 +14,23 @@
                     <h2>Delete Appointments</h2>
                     <p></p>
                     <p>* Choose which appointments you want to delete by using checkbox</p>
-                    <input type="submit" id="submitButton" th:value="DELETE"/>
+                    <input type="submit" id="submitButton" th:value="#{delete.button}"/>
                     <p></p>
                 <table>
                     <thead>
                         <tr>
-                          <th> Dentist </th>
-                          <th> Appointment </th>
+                           <th th:text="#{dentist.name}">dentist.name</th>
+                           <th th:text="#{appointment.dateAndTime}">appointment.dateAndTime</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:if="${form.empty()}">
-                          <td colspan="2"> No Appointments have been made </td>
+                            <td colspan="2" th:text="#{appointments.none}"> appointments.none </td>
                         </tr>
                         <tr th:each="appointment, itemStat : ${form.appointments}">
-                          <td><span th:text="${appointment.dentistName}" > Dentist </span></td>
-                          <td><span th:text="${appointment.appointmentDateTime}" > Appointment </span></td>
-                          <td><input type="checkbox" name="appointmentIds" th:value="${appointment.getId()}" /></td>
+                            <td><span th:text="${appointment.dentistName}" > Dentist </span></td>
+                            <td><span th:text="${appointment.appointmentDateTime}" > Appointment </span></td>
+                            <td><input type="checkbox" name="appointmentIds" th:value="${appointment.getId()}" /></td>
                         </tr>
                     </tbody>
                 </table>

@@ -14,20 +14,20 @@
                     <h2>Edit Appointments</h2>
                     <p></p>
                     <p>* If you wish to drop your made changes please click 'Reset'</p>
-                    <input type="submit" id="submitButton" th:value="EDIT"/>
+                    <input type="submit" id="submitButton" th:value="#{edit.button}"/>
                     <input type="reset" id="resetButton" name="reset" th:value="Reset"/>
                     <p></p>
                 <table>
                     <thead>
                         <tr>
                             <th></th>
-                            <th> Dentist </th>
-                            <th> Appointment </th>
+                            <th th:text="#{dentist.name}">dentist.name</th>
+                            <th th:text="#{appointment.dateAndTime}">appointment.dateAndTime</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:if="${form.empty()}">
-                            <td colspan="2"> No Appointments have been made </td>
+                            <td colspan="2" th:text="#{appointments.none}"> appointments.none </td>
                         </tr>
                         <tr th:each="appointment, itemStat : ${form.appointments}">
                             <td><input type="hidden" th:name="|appointments[${itemStat.index}].id|" th:value="${appointment.getId()}"/></td>

@@ -9,6 +9,8 @@
         <form action="#" th:action="@{/}" th:object="${dentistAppointmentDTO}" method="post">
             <fieldset>
                     <h2>Register Appointment</h2>
+                    <p></p>
+                    <p>* Choose Dentist and Appointment time and date</p>
                 <table>
                     <thead>
                         <tr>
@@ -26,7 +28,7 @@
                             <td><input type="datetime-local" id="dateTimePicker" step="3600" onchange="checkCorrectTime()" th:field="*{appointmentDateTime}"/></td>
                         </tr>
                         <tr>
-                            <td><button type="submit" th:text="#{register.appointment}"></button></td>
+                            <td><button type="submit" th:text="#{register.button}"></button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -42,15 +44,15 @@
                 <table>
                     <thead>
                         <tr>
-                            <th> Dentist </th>
-                            <th> Appointment </th>
+                            <th th:text="#{dentist.name}">dentist.name</th>
+                            <th th:text="#{appointment.dateAndTime}">appointment.dateAndTime</th>
                             <th> <input type="button" id="editButton" onclick="location.href='/edit'" value="Edit Appointments" /> </th>
                             <th> <input type="button" id="deleteButton" onclick="location.href='/delete'" value="Delete Appointments" /> </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:if="${appointments.empty()}">
-                            <td colspan="2"> No Appointments have been made </td>
+                            <td colspan="2" th:text="#{appointments.none}"> appointments.none </td>
                         </tr>
                         <tr th:each="appointment : ${appointments.getAppointments()}">
                             <td><span th:text="${appointment.dentistName}"> Dentist </span></td>
@@ -71,7 +73,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <th> Dentist </th>
+                                <th th:text="#{dentist.name}">dentist.name</th>
                                 <th> Start Date and Time </th>
                                 <th> End Date and Time </th>
                             </tr>
@@ -96,8 +98,8 @@
                     <table>
                         <thead>
                             <tr>
-                                <th> Dentist </th>
-                                <th> Appointment </th>
+                                <th th:text="#{dentist.name}">dentist.name</th>
+                                <th th:text="#{appointment.dateAndTime}">appointment.dateAndTime</th>
                             </tr>
                         </thead>
                         <tbody>
