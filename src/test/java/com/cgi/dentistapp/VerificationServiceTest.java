@@ -34,6 +34,7 @@ public class VerificationServiceTest {
     // INTEGRATION TEST
     @Test
     public void checkIfAppointmentIsAvailable_verifyAppointmentAgainstEmptyDB(){
+        repo.deleteAll();
 
         String dentistName = "Equitia Clara";
         Date appointmentDateTime = new Date();
@@ -45,12 +46,12 @@ public class VerificationServiceTest {
         }
 
         Assert.assertTrue(verificationService.checkIfAppointmentIsAvailable(dentistName, appointmentDateTime));
-        repo.deleteAll();
     }
 
     // INTEGRATION TEST
     @Test
     public void checkIfAppointmentIsAvailable_verifyDifferentAppointmentAgainstNonEmptyDB(){
+        repo.deleteAll();
 
         String dentistName1 = "Equitia Clara";
         String dentistName2 = "Horatius Fulgencio";
@@ -72,12 +73,12 @@ public class VerificationServiceTest {
         dataPersistenceService.addAppointment(dentistName2, appointmentDateTime2);
 
         Assert.assertTrue(verificationService.checkIfAppointmentIsAvailable(registeredDentistName, registeredAppointmentDateTime));
-        repo.deleteAll();
     }
 
     // INTEGRATION TEST
     @Test
     public void checkIfAppointmentIsAvailable_verifySameAppointmentAgainstNonEmptyDB(){
+        repo.deleteAll();
 
         String dentistName = "Equitia Clara";
         Date appointmentDateTime = new Date();
@@ -91,7 +92,6 @@ public class VerificationServiceTest {
         dataPersistenceService.addAppointment(dentistName, appointmentDateTime);
 
         Assert.assertFalse(verificationService.checkIfAppointmentIsAvailable(dentistName, appointmentDateTime));
-        repo.deleteAll();
     }
 
     @Test
@@ -147,6 +147,7 @@ public class VerificationServiceTest {
     // INTEGRATION TEST
     @Test
     public void checkIfIdsAreValid_allIdsPresentInDB(){
+        repo.deleteAll();
 
         List<Integer> verifiedIds = setupForIdTesting();
         StringBuilder sb = new StringBuilder();
@@ -162,30 +163,29 @@ public class VerificationServiceTest {
         String ids = sb.toString();
 
         Assert.assertTrue(verificationService.checkIfIdsAreValid(ids));
-        repo.deleteAll();
     }
 
     // INTEGRATION TEST
     @Test
     public void checkIfIdsAreValid_IdNotPresentInDB(){
+        repo.deleteAll();
 
         List<Integer> verifiedIds = setupForIdTesting();
         String ids = Integer.toString(verifiedIds.get(verifiedIds.size() - 1) + 1);
 
         Assert.assertFalse(verificationService.checkIfIdsAreValid(ids));
-        repo.deleteAll();
     }
 
     // INTEGRATION TEST
     @Test
     public void checkIfIdsAreValid_idContainsNonNumerics(){
+        repo.deleteAll();
 
         setupForIdTesting();
 
         String ids = "q";
 
         Assert.assertFalse(verificationService.checkIfIdsAreValid(ids));
-        repo.deleteAll();
     }
 
     private List<Integer> setupForIdTesting(){

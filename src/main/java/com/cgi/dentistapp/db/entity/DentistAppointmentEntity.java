@@ -55,7 +55,6 @@ public class DentistAppointmentEntity {
         this.appointmentTime = appointmentTime;
     }
 
-    // IS THIS A NICE and correct equals?
     @Override
     public boolean equals(Object o){
 
