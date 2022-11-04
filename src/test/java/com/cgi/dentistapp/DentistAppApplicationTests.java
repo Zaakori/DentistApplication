@@ -23,6 +23,7 @@ import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+// got Thymeleaf with MockMvc testing part from https://rieckpil.de/test-thymeleaf-controller-endpoints-with-spring-boot-and-mockmvc/
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @AutoConfigureMockMvc
